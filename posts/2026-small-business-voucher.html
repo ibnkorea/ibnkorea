@@ -6,6 +6,7 @@
     <title>2026년 소상공인 경영안정 바우처 5,790억원 완전 가이드 - IBN</title>
     <meta name="description" content="2026년 신규 도입된 소상공인 경영안정 바우처 완벽 가이드. 230만 소상공인 대상, 1인당 25만원 지급. 신청 조건과 사용처를 상세히 안내합니다.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #10B981;
@@ -565,6 +566,76 @@
             font-size: 16px;
             color: rgba(255,255,255,0.85);
             margin-bottom: 20px;
+            line-height: 1.9;
+        }
+
+        /* 요약 카드 */
+        .summary-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+        .summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .summary-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .summary-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .summary-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+        /* 차트 컨테이너 */
+        .chart-container { position: relative; height: 300px; margin-bottom: 16px; }
+        .chart-description { font-size: 14px; color: rgba(255,255,255,0.6); text-align: center; }
+
+        /* 하이라이트 박스 */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .highlight-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .styled-list { list-style: none; padding: 0; }
+        .styled-list li {
+            padding: 12px 0 12px 28px;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .styled-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
         }
 
         /* 테이블 */
@@ -769,6 +840,29 @@
             <div class="voucher-label">소상공인 1인당 지급 금액</div>
         </div>
 
+        <!-- 핵심 요약 -->
+        <div class="summary-card">
+            <h2 class="summary-title">📌 핵심 요약</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-value">5,790억</div>
+                    <div class="summary-label">총 예산 규모</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">25만원</div>
+                    <div class="summary-label">1인당 지급액</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">230만</div>
+                    <div class="summary-label">지원 대상 업체</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">1.04억</div>
+                    <div class="summary-label">매출 기준 (미만)</div>
+                </div>
+            </div>
+        </div>
+
         <!-- 핵심 정보 -->
         <div class="key-info-grid">
             <div class="key-info-item">
@@ -788,74 +882,22 @@
             </div>
         </div>
 
-        <!-- 예산 배분 도넛 차트 -->
+        <!-- 예산 배분 도넛 차트 (Chart.js) -->
         <div class="chart-section">
             <h3 class="chart-title">📊 경영안정 바우처 5,790억원 예산 배분</h3>
-            <div class="donut-chart-container">
-                <div class="donut-chart">
-                    <div class="donut-hole">
-                        <div class="donut-total">5,790억</div>
-                        <div class="donut-label">총 예산</div>
-                    </div>
-                </div>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #10B981;"></div>
-                        <span>고정비 바우처 · 1,737억 (30%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #3B82F6;"></div>
-                        <span>4대 보험료 · 1,158억 (20%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #F59E0B;"></div>
-                        <span>공과금 지원 · 1,158억 (20%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #8B5CF6;"></div>
-                        <span>운영 관리비 · 868억 (15%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #EF4444;"></div>
-                        <span>긴급 지원 · 869억 (15%)</span>
-                    </div>
-                </div>
+            <div class="chart-container">
+                <canvas id="budgetChart"></canvas>
             </div>
+            <p class="chart-description">2026년 소상공인 경영안정 바우처 예산 배분 현황 (단위: 억원)</p>
         </div>
 
-        <!-- 지원 혜택 바 차트 -->
+        <!-- 연도별 지원 추이 차트 (Chart.js) -->
         <div class="chart-section">
-            <h3 class="chart-title">📈 소상공인 경영안정 바우처 지원 현황</h3>
-            <div class="bar-chart">
-                <div class="bar-item">
-                    <span class="bar-label">지원 금액</span>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 100%; background: linear-gradient(90deg, #10B981, #34D399);"></div>
-                    </div>
-                    <span class="bar-value">25만원/인</span>
-                </div>
-                <div class="bar-item">
-                    <span class="bar-label">지원 업체 수</span>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 95%; background: linear-gradient(90deg, #3B82F6, #60A5FA);"></div>
-                    </div>
-                    <span class="bar-value" style="color: #3B82F6;">230만 업체</span>
-                </div>
-                <div class="bar-item">
-                    <span class="bar-label">총 예산</span>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 85%; background: linear-gradient(90deg, #F59E0B, #FBBF24);"></div>
-                    </div>
-                    <span class="bar-value" style="color: #F59E0B;">5,790억원</span>
-                </div>
-                <div class="bar-item">
-                    <span class="bar-label">매출 기준</span>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: 70%; background: linear-gradient(90deg, #8B5CF6, #A78BFA);"></div>
-                    </div>
-                    <span class="bar-value" style="color: #8B5CF6;">1.04억 미만</span>
-                </div>
+            <h3 class="chart-title">📈 소상공인 지원사업 연도별 추이 (2022-2026)</h3>
+            <div class="chart-container">
+                <canvas id="trendChart"></canvas>
             </div>
+            <p class="chart-description">최근 5년간 소상공인 지원사업 예산 추이 (단위: 억원)</p>
         </div>
 
         <!-- 바우처 사용처 -->
@@ -1035,6 +1077,51 @@
                 해당 지역 소상공인은 별도의 신청 기간이 지정되어 우선 심사를 받을 수 있으며,
                 일부 추가 혜택도 제공될 예정입니다.
             </p>
+
+            <p class="content-text">
+                바우처 지급 방식은 기존 현금 지급이 아닌 <strong>전용 카드 포인트</strong> 방식으로 운영됩니다.
+                이는 부정 수급을 방지하고 실제 사업 운영에 필요한 고정비 지출에만 사용할 수 있도록
+                설계되었습니다. 한국전력, 도시가스 공사, 국민건강보험공단 등과 연계하여 실시간으로
+                납부가 가능합니다.
+            </p>
+
+            <p class="content-text">
+                <strong>신청 방법</strong>은 소상공인24 온라인 시스템을 통해 진행되며, 모바일 앱으로도 신청이 가능합니다.
+                소상공인 확인서가 필요하며, 사업자등록 후 6개월이 경과한 업체만 신청할 수 있습니다.
+                심사 기간은 약 2~3주가 소요되며, 선정된 업체에는 문자로 통보 후 바우처가 지급됩니다.
+            </p>
+
+            <p class="content-text">
+                2026년 바우처 사업의 핵심은 <strong>소상공인의 실질적인 경영 부담 완화</strong>입니다.
+                월평균 전기요금 15만원, 가스요금 8만원을 납부하는 소상공인에게 25만원의 바우처는
+                약 1개월분의 공과금에 해당하는 실질적인 지원이 됩니다. 정부는 이를 통해
+                약 5,750억원의 소상공인 경영비용 절감 효과를 기대하고 있습니다.
+            </p>
+
+            <p class="content-text">
+                특히 <strong>영세 소상공인</strong>일수록 고정비 부담이 매출에서 차지하는 비중이 높기 때문에,
+                이번 바우처 지원의 체감 효과가 클 것으로 예상됩니다. 연매출 5,000만원 미만 업체의 경우
+                평균 고정비 비중이 매출의 35%에 달하며, 이러한 영세 소상공인이 전체 대상의 60% 이상을 차지합니다.
+            </p>
+
+            <p class="content-text">
+                바우처 지급 대상 업종은 <strong>전통시장, 음식점, 소매업, 서비스업</strong> 등 대부분의 소상공인 업종이 포함됩니다.
+                다만, 사행성 업종(유흥주점, 노래방 등), 임대업, 금융업 등은 지원 제외 업종으로 분류되어 있으니
+                신청 전 업종 해당 여부를 반드시 확인해야 합니다. 중소벤처기업부 홈페이지에서 업종별 지원 여부를
+                조회할 수 있습니다.
+            </p>
+
+            <!-- 하이라이트 박스 -->
+            <div class="highlight-box">
+                <h4 class="highlight-title">💡 2026년 경영안정 바우처 핵심 변경사항</h4>
+                <ul class="styled-list">
+                    <li><strong>명칭 변경:</strong> '부담경감 크레딧' → '경영안정 바우처'로 명칭 통합</li>
+                    <li><strong>예산 확대:</strong> 전년 대비 1,200억원 증액 (4,590억→5,790억)</li>
+                    <li><strong>사용처 확대:</strong> 전기요금 외 가스·수도·통신비·4대보험료 추가</li>
+                    <li><strong>지역 우대:</strong> 비수도권·인구감소지역 소상공인 우선 지원</li>
+                    <li><strong>신청 간소화:</strong> 모바일 앱 신청 및 자동 자격 확인 시스템 도입</li>
+                </ul>
+            </div>
         </section>
 
         <!-- 신청 일정 -->
@@ -1147,6 +1234,67 @@
             const faqItem = element.parentElement;
             faqItem.classList.toggle('active');
         }
+
+        // 예산 배분 도넛 차트
+        new Chart(document.getElementById('budgetChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['고정비 바우처 (1,737억)', '4대 보험료 (1,158억)', '공과금 지원 (1,158억)', '운영 관리비 (868억)', '긴급 지원 (869억)'],
+                datasets: [{
+                    data: [1737, 1158, 1158, 868, 869],
+                    backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: 'rgba(255,255,255,0.8)', padding: 20, font: { size: 12 } }
+                    }
+                }
+            }
+        });
+
+        // 연도별 추이 라인 차트
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: '소상공인 지원 예산',
+                    data: [3200, 3800, 4200, 4590, 5790],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#10B981'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 2500,
+                        max: 6500,
+                        ticks: { color: 'rgba(255,255,255,0.6)', callback: v => v + '억' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'rgba(255,255,255,0.6)' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
     </script>
 </body>
 </html>

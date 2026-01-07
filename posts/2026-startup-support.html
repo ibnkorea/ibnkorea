@@ -6,6 +6,7 @@
     <title>2026년 창업지원사업 통합공고 3.46조원 완전 가이드 - IBN</title>
     <meta name="description" content="2026년 창업지원사업 통합공고 3조 4,645억원 총정리. 111개 기관 508개 사업, 예비창업패키지부터 초격차까지 단계별 지원내용을 상세히 안내합니다.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #8B5CF6;
@@ -552,6 +553,76 @@
             font-size: 16px;
             color: rgba(255,255,255,0.85);
             margin-bottom: 20px;
+            line-height: 1.9;
+        }
+
+        /* 요약 카드 */
+        .summary-card {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+        .summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .summary-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .summary-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .summary-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+        /* 차트 컨테이너 */
+        .chart-container { position: relative; height: 300px; margin-bottom: 16px; }
+        .chart-description { font-size: 14px; color: rgba(255,255,255,0.6); text-align: center; }
+
+        /* 하이라이트 박스 */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .highlight-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .styled-list { list-style: none; padding: 0; }
+        .styled-list li {
+            padding: 12px 0 12px 28px;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .styled-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
         }
 
         /* 알림 박스 */
@@ -671,6 +742,29 @@
             <p class="article-meta">2026.01.07 · 조회 1,892</p>
         </header>
 
+        <!-- 핵심 요약 -->
+        <div class="summary-card">
+            <h2 class="summary-title">📌 핵심 요약</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-value">3.46조</div>
+                    <div class="summary-label">총 지원 규모</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">508개</div>
+                    <div class="summary-label">지원 사업 수</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">111개</div>
+                    <div class="summary-label">참여 기관</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">+5.2%</div>
+                    <div class="summary-label">전년 대비 증가</div>
+                </div>
+            </div>
+        </div>
+
         <!-- 핵심 숫자 -->
         <div class="stats-hero">
             <div class="stat-item">
@@ -695,60 +789,22 @@
             </div>
         </div>
 
-        <!-- 지원 유형별 예산 차트 -->
+        <!-- 지원 유형별 예산 차트 (Chart.js) -->
         <div class="chart-section">
             <h3 class="chart-title">📊 2026년 창업지원 유형별 예산 배분</h3>
-            <div class="pie-chart-layout">
-                <div class="pie-chart-container">
-                    <div class="pie-chart"></div>
-                    <div class="pie-center">
-                        <div class="pie-center-value">3.46조</div>
-                        <div class="pie-center-label">총 예산</div>
-                    </div>
-                </div>
-                <div class="pie-legend">
-                    <div class="legend-row">
-                        <div class="legend-color" style="background: #8B5CF6;"></div>
-                        <div class="legend-info">
-                            <div class="legend-name">융자 지원</div>
-                            <div class="legend-desc">정책자금 융자, 신용보증 등</div>
-                        </div>
-                        <div class="legend-amount">1.42조 (41.1%)</div>
-                    </div>
-                    <div class="legend-row">
-                        <div class="legend-color" style="background: #EC4899;"></div>
-                        <div class="legend-info">
-                            <div class="legend-name">기술개발(R&D)</div>
-                            <div class="legend-desc">창업성장기술개발, 연구개발비</div>
-                        </div>
-                        <div class="legend-amount">8,648억 (25.8%)</div>
-                    </div>
-                    <div class="legend-row">
-                        <div class="legend-color" style="background: #F59E0B;"></div>
-                        <div class="legend-info">
-                            <div class="legend-name">사업화 지원</div>
-                            <div class="legend-desc">창업패키지, 멘토링, 교육</div>
-                        </div>
-                        <div class="legend-amount">8,151억 (24.0%)</div>
-                    </div>
-                    <div class="legend-row">
-                        <div class="legend-color" style="background: #10B981;"></div>
-                        <div class="legend-info">
-                            <div class="legend-name">시설·공간</div>
-                            <div class="legend-desc">창업보육센터, 메이커스페이스</div>
-                        </div>
-                        <div class="legend-amount">1,890억 (5.5%)</div>
-                    </div>
-                    <div class="legend-row">
-                        <div class="legend-color" style="background: #3B82F6;"></div>
-                        <div class="legend-info">
-                            <div class="legend-name">기타</div>
-                            <div class="legend-desc">컨설팅, 인력, 마케팅 등</div>
-                        </div>
-                        <div class="legend-amount">1,256억 (3.6%)</div>
-                    </div>
-                </div>
+            <div class="chart-container">
+                <canvas id="budgetChart"></canvas>
             </div>
+            <p class="chart-description">2026년 창업지원사업 예산 유형별 배분 현황 (단위: 억원)</p>
+        </div>
+
+        <!-- 연도별 추이 차트 (Chart.js) -->
+        <div class="chart-section">
+            <h3 class="chart-title">📈 창업지원사업 연도별 예산 추이 (2022-2026)</h3>
+            <div class="chart-container">
+                <canvas id="trendChart"></canvas>
+            </div>
+            <p class="chart-description">최근 5년간 창업지원사업 통합공고 예산 추이 (단위: 조원)</p>
         </div>
 
         <!-- 참여 기관 -->
@@ -958,6 +1014,42 @@
                 배정되었습니다. 청년창업사관학교는 1,025억원, 창업중심대학은 883억원 규모로 운영되며,
                 대학생 창업부터 사회 초년생 창업까지 전방위적 지원이 이루어집니다.
             </p>
+
+            <p class="content-text">
+                기술개발(R&D) 분야에서는 <strong>창업성장기술개발사업</strong>이 7,864억원으로 가장 큰 비중을 차지합니다.
+                업력 7년 이내 기업이 신청할 수 있으며, 최대 3년간 15억원의 기술개발비를 지원받을 수 있습니다.
+                특히 AI, 반도체, 바이오 등 첨단 분야 창업기업에 대해서는 우대 가점이 부여됩니다.
+            </p>
+
+            <p class="content-text">
+                <strong>TIPS(Tech Incubator Program for Startup)</strong> 프로그램은 1,200억원 규모로 운영됩니다.
+                기술력 있는 창업팀을 선발하여 엔젤투자와 R&D 자금을 결합하여 최대 7억원까지 지원합니다.
+                민간 투자 유치와 정부 지원을 연계하여 창업 성공률을 높이는 것이 특징입니다.
+            </p>
+
+            <p class="content-text">
+                지역 기반 창업 지원도 강화되었습니다. <strong>비수도권 창업기업</strong>에 대해서는 심사 시 가점이 부여되며,
+                지역 특화 창업센터 28개소를 통한 밀착 지원이 이루어집니다. 또한 지역 연고 대학과 연계한
+                창업 프로그램을 통해 지역 인재의 창업을 활성화하고 있습니다.
+            </p>
+
+            <p class="content-text">
+                신청 절차는 K-Startup 포털(www.k-startup.go.kr)을 통해 온라인으로 진행됩니다.
+                각 사업별로 신청 기간이 다르므로 통합공고문을 확인하여 <strong>사업별 접수 일정을 체크</strong>하는 것이 중요합니다.
+                대부분의 창업패키지는 2~3월에 공고가 시작되며, R&D 사업은 분기별로 접수합니다.
+            </p>
+
+            <!-- 하이라이트 박스 -->
+            <div class="highlight-box">
+                <h4 class="highlight-title">💡 2026년 창업지원사업 핵심 변경사항</h4>
+                <ul class="styled-list">
+                    <li><strong>금융위 신규 참여:</strong> 신용보증기금·기보 통한 창업기업 보증사업 4개 추가</li>
+                    <li><strong>청년 창업 확대:</strong> 청년 창업 예산 801억원 증액 (1,774억→2,575억)</li>
+                    <li><strong>딥테크 우대:</strong> AI·반도체·바이오 분야 창업기업 심사 가점 부여</li>
+                    <li><strong>비수도권 강화:</strong> 지역 특화 창업센터 28개소 운영, 비수도권 가점</li>
+                    <li><strong>스케일업 집중:</strong> 창업도약패키지 지원금 3억원으로 확대</li>
+                </ul>
+            </div>
         </section>
 
         <!-- 신청 방법 -->
@@ -1020,5 +1112,68 @@
             </a>
         </div>
     </div>
+
+    <script>
+        // 유형별 예산 도넛 차트
+        new Chart(document.getElementById('budgetChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['융자 지원 (1.42조)', '기술개발 R&D (8,648억)', '사업화 지원 (8,151억)', '시설·공간 (1,890억)', '기타 (1,256억)'],
+                datasets: [{
+                    data: [14200, 8648, 8151, 1890, 1256],
+                    backgroundColor: ['#8B5CF6', '#EC4899', '#F59E0B', '#10B981', '#3B82F6'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: 'rgba(255,255,255,0.8)', padding: 20, font: { size: 12 } }
+                    }
+                }
+            }
+        });
+
+        // 연도별 추이 라인 차트
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: '창업지원사업 예산',
+                    data: [2.8, 3.0, 3.2, 3.29, 3.46],
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#8B5CF6'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 2.5,
+                        max: 4,
+                        ticks: { color: 'rgba(255,255,255,0.6)', callback: v => v + '조' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'rgba(255,255,255,0.6)' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

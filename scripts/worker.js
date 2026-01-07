@@ -1246,7 +1246,8 @@ async function handleBoardAPI(request, env, path) {
         tags: record.fields['tag'] || '',
         date: record.fields['date'] || '',
         views: 0,
-        isPublic: record.fields['isPublic'] || false
+        isPublic: record.fields['isPublic'] || false,
+        slug: record.fields['slug'] || ''
       };
 
       return new Response(JSON.stringify({ post }), {

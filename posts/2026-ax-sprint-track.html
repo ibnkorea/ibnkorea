@@ -6,6 +6,7 @@
     <title>2026년 AX 스프린트 우대트랙 1,400억원 - AI·반도체 기업 특화 지원 - IBN</title>
     <meta name="description" content="2026년 신설된 AX 스프린트 우대트랙 완벽 가이드. AI·반도체 혁신기업 대상 1,400억원 규모, 최대 한도·금리 우대·신속평가 혜택을 상세히 안내합니다.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #06B6D4;
@@ -643,6 +644,76 @@
             font-size: 16px;
             color: rgba(255,255,255,0.85);
             margin-bottom: 20px;
+            line-height: 1.9;
+        }
+
+        /* 요약 카드 */
+        .summary-card {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+        .summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .summary-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .summary-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .summary-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+        /* 차트 컨테이너 */
+        .chart-container { position: relative; height: 300px; margin-bottom: 16px; }
+        .chart-description { font-size: 14px; color: rgba(255,255,255,0.6); text-align: center; }
+
+        /* 하이라이트 박스 */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .highlight-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .styled-list { list-style: none; padding: 0; }
+        .styled-list li {
+            padding: 12px 0 12px 28px;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .styled-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
         }
 
         /* 알림 박스 */
@@ -766,6 +837,38 @@
             <div class="hero-desc">AI·반도체 혁신기업 전용 정책자금 우대 트랙</div>
         </div>
 
+        <!-- 핵심 요약 -->
+        <div class="summary-card">
+            <h2 class="summary-title">📌 핵심 요약</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-value">1,400억</div>
+                    <div class="summary-label">총 예산 규모</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">100억</div>
+                    <div class="summary-label">최대 대출 한도</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">-0.5%p</div>
+                    <div class="summary-label">금리 우대</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">2~3주</div>
+                    <div class="summary-label">심사 기간</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 예산 배분 차트 (Chart.js) -->
+        <div class="chart-section">
+            <h3 class="chart-title">📊 AX 스프린트 1,400억원 예산 배분</h3>
+            <div class="chart-container">
+                <canvas id="budgetChart"></canvas>
+            </div>
+            <p class="chart-description">2026년 AX 스프린트 우대트랙 분야별 예산 배분 (단위: 억원)</p>
+        </div>
+
         <!-- 지원 내역 바 차트 -->
         <div class="chart-section">
             <h3 class="chart-title">📊 AX 스프린트 우대 혜택 비교</h3>
@@ -801,39 +904,13 @@
             </div>
         </div>
 
-        <!-- 예산 배분 도넛 차트 -->
+        <!-- AI·반도체 투자 추이 차트 (Chart.js) -->
         <div class="chart-section">
-            <h3 class="chart-title">💰 AX 스프린트 1,400억원 예산 배분</h3>
-            <div class="donut-chart-container">
-                <div class="donut-chart">
-                    <div class="donut-hole">
-                        <div class="donut-total">1,400억</div>
-                        <div class="donut-label">총 예산</div>
-                    </div>
-                </div>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #06B6D4;"></div>
-                        <span>AI 기업 지원 · 504억 (36%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #8B5CF6;"></div>
-                        <span>반도체 기업 지원 · 336억 (24%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #10B981;"></div>
-                        <span>융합(AI+반도체) · 252억 (18%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #F59E0B;"></div>
-                        <span>스케일업 기업 · 168억 (12%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #EF4444;"></div>
-                        <span>비금융 지원 · 140억 (10%)</span>
-                    </div>
-                </div>
+            <h3 class="chart-title">📈 AI·반도체 정책자금 연도별 추이 (2022-2026)</h3>
+            <div class="chart-container">
+                <canvas id="trendChart"></canvas>
             </div>
+            <p class="chart-description">최근 5년간 AI·반도체 분야 정책자금 지원 추이 (단위: 억원)</p>
         </div>
 
         <!-- 대상 업종 -->
@@ -1032,6 +1109,43 @@
                 유망 기업의 경우 5년간 최대 5회까지 정책자금을 지원받을 수 있어, 성장 단계별로 지속적인
                 자금 확보가 가능합니다.
             </p>
+
+            <p class="content-text">
+                <strong>신청 자격</strong>은 중소기업기본법상 중소기업으로, AI 또는 반도체 관련 업종을 영위해야 합니다.
+                AI 기업의 경우 인공지능 솔루션, 머신러닝, 자연어처리, 컴퓨터비전 등의 분야가 해당되며,
+                반도체 기업은 팹리스 설계, 장비·소재·부품, 패키징·테스트 솔루션 등이 포함됩니다.
+            </p>
+
+            <p class="content-text">
+                <strong>우대 가점</strong>이 부여되는 요소도 있습니다. AI/반도체 관련 특허를 보유하거나,
+                정부 R&D 과제 수행 실적이 있는 기업, 벤처기업 인증 보유 기업, 수출 실적 보유 기업 등은
+                심사 시 가점을 받을 수 있습니다. 특히 고용 증가 계획을 제시하는 기업에는 추가 우대가 적용됩니다.
+            </p>
+
+            <p class="content-text">
+                AX 스프린트 우대트랙의 또 다른 특징은 <strong>민간 투자 연계</strong>입니다. 유망 기업으로 선정되면
+                벤처캐피탈, 엔젤투자자 등과의 IR(Investor Relations) 기회가 제공되며,
+                AI바우처 사업, TIPS 프로그램 등 다른 정부 지원사업과의 연계 신청도 가능합니다.
+            </p>
+
+            <p class="content-text">
+                신청은 <strong>중소벤처기업진흥공단 누리집(www.kosmes.or.kr)</strong>에서 온라인으로 진행됩니다.
+                2026년 1월부터 상시 접수 체계로 운영되며, 정책자금 내비게이션에서 업종(AI/반도체)을 선택하면
+                AX 스프린트 우대트랙이 자동으로 추천됩니다. 문의는 정책자금 전담 콜센터(1811-3655)나
+                중소기업통합콜센터(1357)로 가능합니다.
+            </p>
+
+            <!-- 하이라이트 박스 -->
+            <div class="highlight-box">
+                <h4 class="highlight-title">💡 AX 스프린트 우대트랙 핵심 특징</h4>
+                <ul class="styled-list">
+                    <li><strong>대출 한도 확대:</strong> 일반 트랙 70억원 → AX 트랙 100억원 (30억 증가)</li>
+                    <li><strong>금리 인하:</strong> 기준금리 대비 0.3%p~0.5%p 추가 인하</li>
+                    <li><strong>심사 기간 단축:</strong> 4~6주 → 2~3주로 Fast-Track 적용</li>
+                    <li><strong>전문 평가:</strong> AI/반도체 분야 전문 평가위원 별도 배정</li>
+                    <li><strong>비금융 지원:</strong> 기술 멘토링, 대기업 연계, 투자 IR 기회 제공</li>
+                </ul>
+            </div>
         </section>
 
         <!-- 신청 프로세스 -->
@@ -1121,5 +1235,67 @@
             </a>
         </div>
     </div>
+
+    <script>
+        // 예산 배분 도넛 차트
+        new Chart(document.getElementById('budgetChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['AI 기업 지원 (504억)', '반도체 기업 지원 (336억)', '융합(AI+반도체) (252억)', '스케일업 기업 (168억)', '비금융 지원 (140억)'],
+                datasets: [{
+                    data: [504, 336, 252, 168, 140],
+                    backgroundColor: ['#06B6D4', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: 'rgba(255,255,255,0.8)', padding: 20, font: { size: 12 } }
+                    }
+                }
+            }
+        });
+
+        // 연도별 추이 라인 차트
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: 'AI·반도체 정책자금',
+                    data: [320, 480, 680, 920, 1400],
+                    borderColor: '#06B6D4',
+                    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#06B6D4'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1600,
+                        ticks: { color: 'rgba(255,255,255,0.6)', callback: v => v + '억' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'rgba(255,255,255,0.6)' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
