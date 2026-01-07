@@ -21,3 +21,5 @@ opencode/
 
 # VS Code AI rules
 .github/instructions/
+
+.vercel
