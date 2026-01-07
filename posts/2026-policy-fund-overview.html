@@ -458,7 +458,7 @@
                         beginAtZero: false,
                         min: 3,
                         max: 5,
-                        ticks: { color: 'rgba(255,255,255,0.6)', callback: v => v + '조' },
+                        ticks: { color: 'rgba(255,255,255,0.6)', callback: v => v.toFixed(1) + '조' },
                         grid: { color: 'rgba(255,255,255,0.1)' }
                     },
                     x: {
@@ -492,7 +492,7 @@
                     x: {
                         beginAtZero: true,
                         max: 3,
-                        ticks: { color: 'rgba(255,255,255,0.6)', callback: v => v + '조' },
+                        ticks: { color: 'rgba(255,255,255,0.6)', callback: v => v.toFixed(1) + '조' },
                         grid: { color: 'rgba(255,255,255,0.1)' }
                     },
                     y: {
