@@ -858,9 +858,9 @@
         }
 
         function displayPost(post) {
-            // htmlFile이 있으면 해당 HTML 파일로 리다이렉트
-            if (post.htmlFile) {
-                window.location.href = `/posts/${post.htmlFile}`;
+            // slug 필드가 있으면 해당 HTML 파일로 리다이렉트
+            if (post.slug) {
+                window.location.href = `/posts/${post.slug}.html`;
                 return;
             }
 
