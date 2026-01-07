@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBN 실제 발송 이메일 미리보기</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            background: #f3f4f6;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .preview-header {
+            max-width: 1300px;
+            margin: 0 auto 30px;
+            text-align: center;
+        }
+        .preview-header h1 {
+            font-size: 28px;
+            color: #111;
+            margin-bottom: 10px;
+        }
+        .preview-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .status-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .tab {
+            padding: 12px 24px;
+            border: none;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            transition: all 0.2s;
+        }
+        .tab:hover { background: #f9fafb; }
+        .tab.active {
+            background: #000;
+            color: white;
+        }
+        .preview-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+        }
+        .preview-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .preview-section.hidden { display: none; }
+        .preview-label {
+            background: #f9fafb;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .preview-label span {
+            font-weight: 600;
+            color: #111;
+        }
+        .preview-label .badge {
+            background: #000;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+        .preview-meta {
+            background: #fefce8;
+            padding: 12px 24px;
+            font-size: 12px;
+            color: #854d0e;
+            border-bottom: 1px solid #fef08a;
+        }
+        .preview-meta strong { color: #713f12; }
+        .email-frame {
+            padding: 30px;
+            background: #f9fafb;
+        }
+        .issue-box {
+            max-width: 1300px;
+            margin: 40px auto 0;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 20px 24px;
+        }
+        .issue-box h3 {
+            color: #dc2626;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .issue-box ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #7f1d1d;
+        }
+        .issue-box li { margin-bottom: 6px; }
+        .issue-box code {
+            background: #fee2e2;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .info-box {
+            max-width: 1300px;
+            margin: 20px auto 0;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 20px 24px;
+        }
+        .info-box h3 {
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .info-box table {
+            width: 100%;
+            font-size: 13px;
+        }
+        .info-box td {
+            padding: 6px 0;
+            border-bottom: 1px solid #dbeafe;
+        }
+        .info-box td:first-child {
+            color: #3b82f6;
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-header">
+        <h1>IBN 실제 발송 이메일 미리보기</h1>
+        <p>현재 index.html에 구현된 실제 코드 기반 이메일 템플릿</p>
+        <div class="status-badge">코드 기반 실시간 미리보기</div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('all')">전체 보기</button>
+        <button class="tab" onclick="showTab('customer')">고객용</button>
+        <button class="tab" onclick="showTab('staff')">담당자용</button>
+    </div>
+
+    <div class="preview-container">
+        <!-- 고객용 이메일 -->
+        <div class="preview-section" id="customer-section">
+            <div class="preview-label">
+                <span>고객용 이메일</span>
+                <span class="badge">Customer</span>
+            </div>
+            <div class="preview-meta">
+                <strong>발신:</strong> IBN &lt;noreply@mail.policy-fund.online&gt;<br>
+                <strong>수신:</strong> 고객 입력 이메일<br>
+                <strong>제목:</strong> [IBN] 무료진단 신청이 접수되었습니다
+            </div>
+            <div class="email-frame">
+                <!-- 실제 customerEmailHTML 템플릿 -->
+                <div style="font-family: 'Pretendard', -apple-system, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <div style="background: linear-gradient(135deg, #000000 0%, #141414 100%); color: white; padding: 35px 30px; border-radius: 16px 16px 0 0; text-align: center;">
+                        <img src="https://pub-5adc3ecd20c347cfb03e96cae9ceb623.r2.dev/logo_light.png" alt="IBN" style="width: 120px; height: auto; margin-bottom: 15px;">
+                        <h2 style="margin: 0; font-size: 22px; font-weight: 700;">무료진단 신청이 접수되었습니다</h2>
+                        <p style="margin: 12px 0 0 0; opacity: 0.95; font-size: 14px; font-weight: 500;">IBN 정책자금 전문상담</p>
+                    </div>
+
+                    <div style="background: white; padding: 35px 30px; border: 1px solid #e5e7eb; border-top: none;">
+                        <div style="background: #F5F5F5; padding: 24px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #000000;">
+                            <p style="margin: 0 0 12px 0; font-size: 16px; color: #1A1A1A;">안녕하세요, <strong style="color: #000000;">홍길동</strong>님! 👋</p>
+                            <p style="margin: 0; color: #404040; line-height: 1.8; font-size: 14px;">정책자금 심사신청이 정상적으로<br>접수되었습니다.<br><br>영업일기준 24시간 이내<br>담당 전문 컨설턴트가 연락드리겠습니다.</p>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #000000 0%, #141414 100%); padding: 24px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);">
+                            <h3 style="color: white; margin: 0 0 18px 0; font-size: 16px; font-weight: 600;">📋 접수 내용</h3>
+                            <table style="width: 100%; color: white; font-size: 12px; border-collapse: separate; border-spacing: 0 6px;">
+                                <tr><td style="padding: 8px 12px; background: rgba(255,255,255,0.15); border-radius: 8px 0 0 8px; width: 35%; white-space: nowrap;">🏢 기업명</td><td style="padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 0 8px 8px 0; font-weight: 600;">(주)테스트기업</td></tr>
+                                <tr><td style="padding: 8px 12px; background: rgba(255,255,255,0.15); border-radius: 8px 0 0 8px; white-space: nowrap;">📞 연락처</td><td style="padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 0 8px 8px 0; font-weight: 600;">010-1234-5678</td></tr>
+                                <tr><td style="padding: 8px 12px; background: rgba(255,255,255,0.15); border-radius: 8px 0 0 8px; white-space: nowrap;">💰 희망자금</td><td style="padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 0 8px 8px 0; font-weight: 600;">1억원 이상</td></tr>
+                                <tr><td style="padding: 8px 12px; background: rgba(255,255,255,0.15); border-radius: 8px 0 0 8px; white-space: nowrap;">⏰ 연락시간</td><td style="padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 0 8px 8px 0; font-weight: 600;">오전 (09:00~12:00)</td></tr>
+                            </table>
+                        </div>
+
+                        <div style="background: #F5F5F5; padding: 20px 24px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #000000; text-align: center;">
+                            <p style="margin: 0; color: #1A1A1A; font-weight: 600; font-size: 15px; line-height: 1.7;">영업일기준 <strong style="color: #000000;">24시간 이내</strong>에<br>IBN에서 연락드리겠습니다.</p>
+                        </div>
+
+                        <div style="text-align: center; padding: 20px 0; border-top: 1px dashed #e5e7eb;">
+                            <p style="margin: 0 0 15px 0; color: #6b7280; font-size: 13px;">문의사항이 있으시면 아래 연락처로 연락주세요</p>
+                            <div style="display: inline-block; background: #f3f4f6; padding: 12px 24px; border-radius: 8px;">
+                                <span style="color: #374151; font-size: 14px;">📞 <strong>1522-7494</strong></span>
+                                <span style="color: #d1d5db; margin: 0 10px;">|</span>
+                                <span style="color: #374151; font-size: 14px;">✉️ <strong>hj.kim@urbane-gp.com</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; padding: 25px; background: #000000; border-radius: 0 0 16px 16px; color: white;">
+                        <p style="margin: 0 0 8px 0; font-weight: 700; font-size: 15px;">IBN</p>
+                        <p style="margin: 0 0 5px 0; opacity: 0.85; font-size: 13px;">중소기업 성장의 든든한 파트너</p>
+                        <p style="margin: 15px 0 0 0; opacity: 0.7; font-size: 11px;">※ 본 메일은 발신 전용입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 담당자용 이메일 -->
+        <div class="preview-section" id="staff-section">
+            <div class="preview-label">
+                <span>담당자용 이메일</span>
+                <span class="badge">Staff</span>
+            </div>
+            <div class="preview-meta">
+                <strong>발신:</strong> IBN &lt;noreply@mail.policy-fund.online&gt;<br>
+                <strong>수신 (TO):</strong> hj.kim@urbane-gp.com<br>
+                <strong>숨은참조 (BCC):</strong> mkt@polarad.co.kr<br>
+                <strong>제목:</strong> [신규무료진단] (주)테스트기업 - 무료진단 신청
+            </div>
+            <div class="email-frame">
+                <!-- 실제 staffEmailHTML 템플릿 -->
+                <div style="font-family: 'Pretendard', -apple-system, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <div style="background: linear-gradient(135deg, #000000 0%, #141414 100%); color: white; padding: 30px; border-radius: 16px 16px 0 0;">
+                        <h2 style="margin: 0; font-size: 24px; font-weight: 700;">🔔 IBN 신규 무료진단 신청</h2>
+                        <p style="margin: 10px 0 0 0; opacity: 0.95; font-size: 14px;">💻 홈페이지 접수</p>
+                    </div>
+
+                    <div style="background: white; padding: 30px; border: 1px solid #e5e7eb; border-top: none;">
+                        <div style="background: #F5F5F5; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #000000;">
+                            <h3 style="color: #1A1A1A; margin: 0 0 15px 0; font-size: 18px; border-bottom: 2px solid #000000; padding-bottom: 8px; display: inline-block;">📋 기업 정보</h3>
+                            <table style="width: 100%;">
+                                <tr><td style="padding: 8px 0; color: #525252; width: 40%; white-space: nowrap;">🏢 기업명</td><td style="font-weight: 600; color: #1A1A1A;">(주)테스트기업</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">📄 사업자번호</td><td style="color: #374151;">123-45-67890</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">📍 지역</td><td style="color: #374151;">서울특별시</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">🏭 업종</td><td style="color: #374151;">IT/소프트웨어</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">📅 설립연도</td><td style="color: #374151;">2020년</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">📊 전년도매출</td><td style="color: #374151;">5억원 이상</td></tr>
+                            </table>
+                        </div>
+
+                        <div style="background: #F5F5F5; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #000000;">
+                            <h3 style="color: #1A1A1A; margin: 0 0 15px 0; font-size: 18px; border-bottom: 2px solid #000000; padding-bottom: 8px; display: inline-block;">👤 담당자 정보</h3>
+                            <table style="width: 100%;">
+                                <tr><td style="padding: 8px 0; color: #525252; width: 40%; white-space: nowrap;">👤 이름</td><td style="color: #374151;">홍길동</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">📞 연락처</td><td style="color: #1A1A1A; font-weight: 600;">010-1234-5678</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">✉️ 이메일</td><td style="color: #374151;">test@example.com</td></tr>
+                                <tr><td style="padding: 8px 0; color: #525252; white-space: nowrap;">⏰ 연락시간</td><td style="color: #000000; font-weight: 600;">오전 (09:00~12:00)</td></tr>
+                            </table>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #000000 0%, #141414 100%); padding: 20px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);">
+                            <h3 style="color: white; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">💰 자금 정보</h3>
+                            <table style="width: 100%; color: white;">
+                                <tr><td style="padding: 10px 15px; background: rgba(255,255,255,0.15); border-radius: 8px 0 0 8px; width: 40%; white-space: nowrap;">💵 희망자금</td><td style="padding: 10px 15px; background: rgba(255,255,255,0.1); border-radius: 0 8px 8px 0; font-weight: 700; font-size: 16px;">1억원 이상</td></tr>
+                                <tr><td style="padding: 10px 15px; background: rgba(255,255,255,0.15); border-radius: 8px 0 0 8px; white-space: nowrap; margin-top: 8px;">🔖 자금종류</td><td style="padding: 10px 15px; background: rgba(255,255,255,0.1); border-radius: 0 8px 8px 0;"><strong>운영자금, 시설자금</strong></td></tr>
+                            </table>
+                        </div>
+
+                        <div style="background: #F5F5F5; padding: 20px; border-radius: 12px; border-left: 4px solid #000000; margin-bottom: 20px;">
+                            <h3 style="color: #1A1A1A; margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">📝 문의내용</h3>
+                            <p style="margin: 0; color: #374151; white-space: pre-wrap;">정책자금 상담 부탁드립니다.
+사업 확장을 위한 운영자금이 필요합니다.</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; padding: 20px; background: #000000; border-radius: 0 0 16px 16px; color: white; font-size: 12px;">
+                        <p style="margin: 0; font-weight: 600;">IBN | 1522-7494</p>
+                        <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 11px;">※ 홈페이지에서 자동 발송되었습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-box" style="background: #f0fdf4; border-color: #86efac;">
+        <h3 style="color: #15803d;">✅ 수정 완료</h3>
+        <table>
+            <tr><td style="color: #22c55e;">담당자 이메일 설정</td><td>TO: hj.kim@urbane-gp.com / BCC: mkt@polarad.co.kr</td></tr>
+            <tr><td style="color: #22c55e;">수정된 파일</td><td>index.html, about.html, fund.html, service.html, process.html</td></tr>
+        </table>
+    </div>
+
+    <div class="info-box">
+        <h3>📋 현재 설정 정보</h3>
+        <table>
+            <tr><td>발신자</td><td>IBN &lt;noreply@mail.policy-fund.online&gt;</td></tr>
+            <tr><td>고객 메일 제목</td><td>[IBN] 무료진단 신청이 접수되었습니다</td></tr>
+            <tr><td>담당자 메일 제목</td><td>[신규무료진단] {기업명} - 무료진단 신청</td></tr>
+            <tr><td>담당자 이메일</td><td>TO: hj.kim@urbane-gp.com / BCC: mkt@polarad.co.kr</td></tr>
+            <tr><td>연락처</td><td>1522-7494</td></tr>
+            <tr><td>브랜드 컬러</td><td>Black (#000000) & White - IBN 브랜드</td></tr>
+        </table>
+    </div>
+
+    <script>
+        function showTab(type) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const customer = document.getElementById('customer-section');
+            const staff = document.getElementById('staff-section');
+
+            if (type === 'all') {
+                customer.classList.remove('hidden');
+                staff.classList.remove('hidden');
+            } else if (type === 'customer') {
+                customer.classList.remove('hidden');
+                staff.classList.add('hidden');
+            } else {
+                customer.classList.add('hidden');
+                staff.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
