@@ -2189,8 +2189,8 @@ export default {
             }
           });
 
-          // R2 공개 URL
-          const publicUrl = `https://pub-1872e954c9da49929650d78642a05e08.r2.dev/${fileName}`;
+          // R2 공개 URL (betterlab 버킷)
+          const publicUrl = `https://pub-5adc3ecd20c347cfb03e96cae9ceb623.r2.dev/${fileName}`;
 
           console.log('✅ Image uploaded:', fileName);
 

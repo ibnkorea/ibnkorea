@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026년 창업지원사업 통합공고 3.46조원 완전 가이드 - IBN</title>
+    <meta name="description" content="2026년 창업지원사업 통합공고 3조 4,645억원 총정리. 111개 기관 508개 사업, 예비창업패키지부터 초격차까지 단계별 지원내용을 상세히 안내합니다.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #6D28D9;
+            --secondary: #EC4899;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --navy: #0F172A;
+            --navy-light: #1E293B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #312E81 50%, #0F172A 100%);
+            min-height: 100vh;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* 헤더 */
+        .article-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .article-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A78BFA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .article-meta {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        /* 핵심 숫자 섹션 */
+        .stats-hero {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFFFF, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* 지원 유형별 차트 */
+        .chart-section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        /* 파이 차트 + 리스트 레이아웃 */
+        .pie-chart-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .pie-chart-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+        }
+
+        .pie-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #8B5CF6 0deg 148deg,
+                #EC4899 148deg 241deg,
+                #F59E0B 241deg 306deg,
+                #10B981 306deg 339deg,
+                #3B82F6 339deg 360deg
+            );
+            position: relative;
+        }
+
+        .pie-chart::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: var(--navy);
+            border-radius: 50%;
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+        }
+
+        .pie-center-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .pie-center-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .legend-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .legend-row:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(8px);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .legend-info {
+            flex: 1;
+        }
+
+        .legend-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .legend-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .legend-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* 단계별 창업 패키지 */
+        .stage-section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stage-flow {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+        }
+
+        .stage-card {
+            flex: 1;
+            min-width: 220px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 28px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .stage-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        .stage-card::after {
+            content: '→';
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .stage-card:last-child::after {
+            display: none;
+        }
+
+        .stage-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .stage-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .stage-target {
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .stage-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .stage-features li {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .stage-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .stage-amount {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stage-amount span {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 참여 기관 시각화 */
+        .org-section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .org-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .org-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .org-item {
+            text-align: center;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.02));
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .org-number {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .org-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* 주요 지원사업 테이블 */
+        .programs-section {
+            margin-bottom: 48px;
+        }
+
+        .program-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .program-table th,
+        .program-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .program-table th {
+            background: rgba(139, 92, 246, 0.2);
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .program-table td {
+            font-size: 14px;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .program-table tr:hover td {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .badge-r-and-d {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(236, 72, 153, 0.2);
+            color: #EC4899;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-edu {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60A5FA;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-funding {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34D399;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* 청년 창업 특화 */
+        .youth-section {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .youth-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .youth-icon {
+            font-size: 48px;
+        }
+
+        .youth-info h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .youth-info p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .youth-programs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .youth-program {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .youth-program-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .youth-program-amount {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        /* 신청 방법 */
+        .apply-section {
+            margin-bottom: 48px;
+        }
+
+        .apply-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .apply-step {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .apply-step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .apply-step-content h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .apply-step-content p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* 콘텐츠 */
+        .content-section {
+            margin-bottom: 48px;
+        }
+
+        .content-text {
+            font-size: 16px;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 20px;
+        }
+
+        /* 알림 박스 */
+        .alert-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            display: flex;
+            gap: 16px;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .alert-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--accent);
+        }
+
+        /* CTA 섹션 */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
+            padding: 48px 32px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .cta-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-desc {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            background: #FFFFFF;
+            color: var(--primary-dark);
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px 60px;
+            }
+
+            .article-title {
+                font-size: 26px;
+            }
+
+            .stats-hero {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+
+            .pie-chart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .pie-chart-container {
+                margin: 0 auto;
+            }
+
+            .stage-flow {
+                flex-direction: column;
+            }
+
+            .stage-card::after {
+                display: none;
+            }
+
+            .org-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="article-header">
+            <span class="category-badge">정책자금</span>
+            <h1 class="article-title">2026년 창업지원사업 통합공고<br>508개 사업 · 3.46조원 완전 가이드</h1>
+            <p class="article-meta">2026.01.07 · 조회 1,892</p>
+        </header>
+
+        <!-- 핵심 숫자 -->
+        <div class="stats-hero">
+            <div class="stat-item">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value">3.46조</div>
+                <div class="stat-label">총 지원 규모</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🏛️</div>
+                <div class="stat-value">111개</div>
+                <div class="stat-label">참여 기관</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">📋</div>
+                <div class="stat-value">508개</div>
+                <div class="stat-label">지원 사업 수</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value">+5.2%</div>
+                <div class="stat-label">전년 대비 증가</div>
+            </div>
+        </div>
+
+        <!-- 지원 유형별 예산 차트 -->
+        <div class="chart-section">
+            <h3 class="chart-title">📊 2026년 창업지원 유형별 예산 배분</h3>
+            <div class="pie-chart-layout">
+                <div class="pie-chart-container">
+                    <div class="pie-chart"></div>
+                    <div class="pie-center">
+                        <div class="pie-center-value">3.46조</div>
+                        <div class="pie-center-label">총 예산</div>
+                    </div>
+                </div>
+                <div class="pie-legend">
+                    <div class="legend-row">
+                        <div class="legend-color" style="background: #8B5CF6;"></div>
+                        <div class="legend-info">
+                            <div class="legend-name">융자 지원</div>
+                            <div class="legend-desc">정책자금 융자, 신용보증 등</div>
+                        </div>
+                        <div class="legend-amount">1.42조 (41.1%)</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-color" style="background: #EC4899;"></div>
+                        <div class="legend-info">
+                            <div class="legend-name">기술개발(R&D)</div>
+                            <div class="legend-desc">창업성장기술개발, 연구개발비</div>
+                        </div>
+                        <div class="legend-amount">8,648억 (25.8%)</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-color" style="background: #F59E0B;"></div>
+                        <div class="legend-info">
+                            <div class="legend-name">사업화 지원</div>
+                            <div class="legend-desc">창업패키지, 멘토링, 교육</div>
+                        </div>
+                        <div class="legend-amount">8,151억 (24.0%)</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-color" style="background: #10B981;"></div>
+                        <div class="legend-info">
+                            <div class="legend-name">시설·공간</div>
+                            <div class="legend-desc">창업보육센터, 메이커스페이스</div>
+                        </div>
+                        <div class="legend-amount">1,890억 (5.5%)</div>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-color" style="background: #3B82F6;"></div>
+                        <div class="legend-info">
+                            <div class="legend-name">기타</div>
+                            <div class="legend-desc">컨설팅, 인력, 마케팅 등</div>
+                        </div>
+                        <div class="legend-amount">1,256억 (3.6%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 참여 기관 -->
+        <div class="org-section">
+            <h3 class="org-title">🏛️ 2026년 창업지원사업 참여 기관</h3>
+            <div class="org-grid">
+                <div class="org-item">
+                    <div class="org-number">15</div>
+                    <div class="org-label">중앙부처</div>
+                </div>
+                <div class="org-item">
+                    <div class="org-number">17</div>
+                    <div class="org-label">광역 지자체</div>
+                </div>
+                <div class="org-item">
+                    <div class="org-number">79</div>
+                    <div class="org-label">기초 지자체</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 단계별 창업 패키지 -->
+        <section class="stage-section">
+            <h2 class="section-title">
+                <span>🎯</span>
+                단계별 창업 패키지 (사업화 지원)
+            </h2>
+
+            <div class="stage-flow">
+                <div class="stage-card">
+                    <span class="stage-badge">STEP 1</span>
+                    <h4 class="stage-title">예비창업패키지</h4>
+                    <div class="stage-target">예비창업자 (미창업자)</div>
+                    <ul class="stage-features">
+                        <li>혁신적 기술 아이디어 보유</li>
+                        <li>사업화 자금 + 창업 교육</li>
+                        <li>멘토링 및 네트워킹</li>
+                        <li>시장 진입 준비 지원</li>
+                    </ul>
+                    <div class="stage-amount">최대 1억원 <span>/ 팀</span></div>
+                </div>
+
+                <div class="stage-card">
+                    <span class="stage-badge">STEP 2</span>
+                    <h4 class="stage-title">초기창업패키지</h4>
+                    <div class="stage-target">업력 3년 이내</div>
+                    <ul class="stage-features">
+                        <li>제품/서비스 고도화</li>
+                        <li>초기 시장 안착 지원</li>
+                        <li>BM 검증 및 개선</li>
+                        <li>후속 투자 유치 연계</li>
+                    </ul>
+                    <div class="stage-amount">최대 1억원 <span>/ 기업</span></div>
+                </div>
+
+                <div class="stage-card">
+                    <span class="stage-badge">STEP 3</span>
+                    <h4 class="stage-title">창업도약패키지</h4>
+                    <div class="stage-target">업력 3~7년</div>
+                    <ul class="stage-features">
+                        <li>사업모델 재설계</li>
+                        <li>스케일업 프로그램</li>
+                        <li>투자 연계 집중</li>
+                        <li>매출 정체 기업 지원</li>
+                    </ul>
+                    <div class="stage-amount">최대 3억원 <span>/ 기업</span></div>
+                </div>
+
+                <div class="stage-card">
+                    <span class="stage-badge">STEP 4</span>
+                    <h4 class="stage-title">초격차패키지</h4>
+                    <div class="stage-target">유망 성장기업</div>
+                    <ul class="stage-features">
+                        <li>글로벌 시장 진출</li>
+                        <li>기술 경쟁력 강화</li>
+                        <li>M&A, IPO 준비</li>
+                        <li>대기업 연계 지원</li>
+                    </ul>
+                    <div class="stage-amount">최대 5억원 <span>/ 기업</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 청년 창업 특화 -->
+        <div class="youth-section">
+            <div class="youth-header">
+                <div class="youth-icon">👨‍💻</div>
+                <div class="youth-info">
+                    <h3>청년 창업 지원 (전년 대비 +801억원 확대)</h3>
+                    <p>39세 이하 청년 예비창업자 및 초기창업자를 위한 특화 프로그램</p>
+                </div>
+            </div>
+            <div class="youth-programs">
+                <div class="youth-program">
+                    <div class="youth-program-name">청년창업사관학교</div>
+                    <div class="youth-program-amount">1,025억원</div>
+                </div>
+                <div class="youth-program">
+                    <div class="youth-program-name">창업중심대학</div>
+                    <div class="youth-program-amount">883억원</div>
+                </div>
+                <div class="youth-program">
+                    <div class="youth-program-name">대학창업펀드</div>
+                    <div class="youth-program-amount">420억원</div>
+                </div>
+                <div class="youth-program">
+                    <div class="youth-program-name">캠퍼스 CEO</div>
+                    <div class="youth-program-amount">247억원</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주요 지원사업 상세 -->
+        <section class="programs-section">
+            <h2 class="section-title">
+                <span>📋</span>
+                2026년 주요 창업지원사업
+            </h2>
+
+            <table class="program-table">
+                <thead>
+                    <tr>
+                        <th>사업명</th>
+                        <th>유형</th>
+                        <th>예산</th>
+                        <th>지원 대상</th>
+                        <th>지원 내용</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>창업성장기술개발</strong></td>
+                        <td><span class="badge-r-and-d">R&D</span></td>
+                        <td>7,864억</td>
+                        <td>업력 7년 이하</td>
+                        <td>최대 3년간 15억원 기술개발비</td>
+                    </tr>
+                    <tr>
+                        <td><strong>청년창업사관학교</strong></td>
+                        <td><span class="badge-edu">교육</span></td>
+                        <td>1,025억</td>
+                        <td>만 39세 이하 청년</td>
+                        <td>창업교육 + 사업화자금 1억원</td>
+                    </tr>
+                    <tr>
+                        <td><strong>창업중심대학</strong></td>
+                        <td><span class="badge-edu">교육</span></td>
+                        <td>883억</td>
+                        <td>대학(원)생, 졸업 후 3년 이내</td>
+                        <td>창업교육 + 시제품 제작 지원</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TIPS 프로그램</strong></td>
+                        <td><span class="badge-funding">투자</span></td>
+                        <td>1,200억</td>
+                        <td>기술 기반 창업팀</td>
+                        <td>엔젤투자+R&D자금 최대 7억</td>
+                    </tr>
+                    <tr>
+                        <td><strong>소부장 스타트업 100</strong></td>
+                        <td><span class="badge-r-and-d">R&D</span></td>
+                        <td>680억</td>
+                        <td>소재·부품·장비 기업</td>
+                        <td>기술개발 + 대기업 연계</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 콘텐츠 섹션 -->
+        <section class="content-section">
+            <h2 class="section-title">
+                <span>📰</span>
+                2026년 창업지원사업 주요 변화
+            </h2>
+
+            <p class="content-text">
+                2026년 창업지원사업 통합공고는 역대 최대 규모인 <strong>3조 4,645억원</strong>을 기록했습니다.
+                전년 대비 1,705억원(5.2%) 증가한 수치로, 정부의 창업 생태계 활성화 의지를 보여줍니다.
+                총 111개 기관(중앙부처 15개, 광역 17개, 기초 79개)이 508개 사업에 참여합니다.
+            </p>
+
+            <p class="content-text">
+                특히 2026년에는 <strong>금융위원회와 산림청이 처음으로</strong> 창업지원사업 통합공고에 참여했습니다.
+                금융위는 신용보증기금, 기술보증기금을 통한 창업기업 보증사업 4개(비예산)를 지원하며,
+                금융 접근성이 어려운 초기 창업기업의 자금 조달을 지원합니다.
+            </p>
+
+            <div class="alert-box">
+                <span class="alert-icon">💡</span>
+                <div class="alert-content">
+                    <div class="alert-title">2026년 신규 참여 기관</div>
+                    금융위원회(보증사업 4개), 산림청(임업창업 지원) 등 2개 부처가 새롭게 참여하여
+                    창업 지원 범위가 더욱 확대되었습니다.
+                </div>
+            </div>
+
+            <p class="content-text">
+                단계별 창업 패키지는 더욱 정교화되었습니다. 예비창업패키지부터 초격차패키지까지
+                <strong>창업자의 성장 단계에 맞는 맞춤형 지원</strong>이 가능해졌습니다.
+                특히 매출 정체나 사업모델 한계에 직면한 기업을 위한 '창업도약패키지'가 강화되어,
+                Death Valley(죽음의 계곡)를 넘어 스케일업할 수 있도록 집중 지원합니다.
+            </p>
+
+            <p class="content-text">
+                청년 창업 지원도 대폭 확대되었습니다. 청년 창업 관련 예산은 전년 대비 <strong>801억원 증가한 2,575억원</strong>이
+                배정되었습니다. 청년창업사관학교는 1,025억원, 창업중심대학은 883억원 규모로 운영되며,
+                대학생 창업부터 사회 초년생 창업까지 전방위적 지원이 이루어집니다.
+            </p>
+        </section>
+
+        <!-- 신청 방법 -->
+        <section class="apply-section">
+            <h2 class="section-title">
+                <span>📝</span>
+                신청 방법 안내
+            </h2>
+
+            <div class="apply-steps">
+                <div class="apply-step">
+                    <div class="apply-step-number">1</div>
+                    <div class="apply-step-content">
+                        <h4>K-Startup 회원가입</h4>
+                        <p>창업지원포털(www.k-startup.go.kr) 가입 및 사업자 인증</p>
+                    </div>
+                </div>
+                <div class="apply-step">
+                    <div class="apply-step-number">2</div>
+                    <div class="apply-step-content">
+                        <h4>지원사업 검색</h4>
+                        <p>업종, 업력, 지역 등 조건별 맞춤 사업 검색</p>
+                    </div>
+                </div>
+                <div class="apply-step">
+                    <div class="apply-step-number">3</div>
+                    <div class="apply-step-content">
+                        <h4>온라인 신청</h4>
+                        <p>사업계획서 작성 및 필요 서류 업로드</p>
+                    </div>
+                </div>
+                <div class="apply-step">
+                    <div class="apply-step-number">4</div>
+                    <div class="apply-step-content">
+                        <h4>평가 및 선정</h4>
+                        <p>서면/발표 평가 후 최종 선정 통보</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <span class="alert-icon">📞</span>
+                <div class="alert-content">
+                    <div class="alert-title">문의처</div>
+                    K-Startup 창업지원포털: www.k-startup.go.kr<br>
+                    중소기업통합콜센터: 1357
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA 섹션 -->
+        <div class="cta-section">
+            <h3 class="cta-title">창업지원 사업 신청 도움이 필요하신가요?</h3>
+            <p class="cta-desc">
+                IBN 전문 컨설턴트가 사업계획서 작성부터 신청까지<br>
+                무료로 도와드립니다.
+            </p>
+            <a href="/index.html#contact-form" class="cta-btn">
+                📞 무료 상담 신청하기
+            </a>
+        </div>
+    </div>
+</body>
+</html>
