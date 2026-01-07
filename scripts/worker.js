@@ -594,18 +594,21 @@ async function handleSubmit(request, env) {
       // 프론트에서 전달받은 필드 사용
       const rawFields = data.airtableFields || {};
 
-      // 필드명 매핑 (한글 → Airtable consulting 테이블)
+      // 필드명 매핑 (한글 → Airtable 고객정보 테이블)
       const fieldMap = {
         '기업명': 'Company',
         '사업자번호': 'BizNo',
-        '대표자명': 'CEO',
+        '대표자명': 'Name',
         '연락처': 'Phone',
         '이메일': 'Email',
+        '지역': 'Region',
         '업종': 'Industry',
+        '설립연도': 'Founded',
         '직전년도매출': 'Revenue',
-        '필요자금규모': 'Budget',
-        '자금종류': 'FundTypes',
-        '문의사항': 'Inquiry',
+        '통화가능시간': 'CallTime',
+        '필요자금규모': 'Amount',
+        '자금종류': 'FundType',
+        '문의사항': 'Message',
         '접수일': 'Date',
         '접수시간': 'Time',
         '상태': 'Status',
@@ -634,7 +637,7 @@ async function handleSubmit(request, env) {
       // fields['Status'] = '신규';
 
       const airtableResponse = await fetch(
-        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/consulting`,
+        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${env.AIRTABLE_TABLE_ID}`,
         {
           method: 'POST',
           headers: {
@@ -815,7 +818,7 @@ function buildTelegramMessage(fields, submitDate, submitTime) {
   }
 
   msg += '\n📅 ' + submitDate + ' ' + submitTime;
-  msg += '\n\n📋 <a href="https://airtable.com/appiCVibf1BnLxKOL/shrCe4DuinV23Cqux">접수내역 확인하기</a>';
+  msg += '\n\n📋 <a href="https://airtable.com/appMKnUSZkLz1Awx8/shrDxWnnVjOmj10Q7">접수내역 확인하기</a>';
   return msg;
 }
 
@@ -832,7 +835,7 @@ async function handleLeadsAPI(request, env, path) {
       console.log('📋 Fetching leads...');
 
       const sortField = encodeURIComponent('Date');
-      const airtableUrl = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/consulting?sort[0][field]=${sortField}&sort[0][direction]=desc`;
+      const airtableUrl = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${env.AIRTABLE_TABLE_ID}?sort[0][field]=${sortField}&sort[0][direction]=desc`;
       const airtableResponse = await fetch(airtableUrl, {
         headers: { 'Authorization': `Bearer ${env.AIRTABLE_TOKEN}` }
       });
@@ -906,7 +909,7 @@ async function handleLeadsAPI(request, env, path) {
       else if (data.메모 !== undefined) fields['Memo'] = data.메모;
 
       const airtableResponse = await fetch(
-        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/consulting/${recordId}`,
+        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${env.AIRTABLE_TABLE_ID}/${recordId}`,
         {
           method: 'PATCH',
           headers: {
@@ -954,7 +957,7 @@ async function handleLeadsAPI(request, env, path) {
       console.log('🗑️ Deleting lead:', recordId);
 
       const airtableResponse = await fetch(
-        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/consulting/${recordId}`,
+        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${env.AIRTABLE_TABLE_ID}/${recordId}`,
         {
           method: 'DELETE',
           headers: {
