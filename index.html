@@ -2714,8 +2714,8 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
                     const postId = card.dataset.id;
 
                     if (slug) {
-                        // 정적 게시글 → 직접 HTML 파일로 이동 (빠른 로딩)
-                        window.location.href = `/posts/${slug}.html`;
+                        // 정적 게시글 → /marketing-news/slug 형태로 이동
+                        window.location.href = `/marketing-news/${slug}`;
                     } else {
                         // API 게시글 → post.html 경유
                         window.location.href = `post.html?id=${postId}`;

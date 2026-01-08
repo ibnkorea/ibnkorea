@@ -2,6 +2,12 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/marketing-news/:slug",
+      "destination": "/posts/:slug.html"
+    }
+  ],
   "redirects": [
     {
       "source": "/",
@@ -13,6 +19,11 @@
       ],
       "destination": "/admin/",
       "permanent": false
+    },
+    {
+      "source": "/posts/:slug",
+      "destination": "/marketing-news/:slug",
+      "permanent": true
     }
   ]
 }
