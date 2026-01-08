@@ -115,7 +115,6 @@
             color: #fff;
         }
         .share-btn svg { width: 18px; height: 18px; fill: currentColor; }
-        .share-btn.kakao:hover { background: rgba(254, 229, 0, 0.15); border-color: rgba(254, 229, 0, 0.4); }
         .share-btn.facebook:hover { background: rgba(24, 119, 242, 0.15); border-color: rgba(24, 119, 242, 0.4); }
         .share-btn.twitter:hover { background: rgba(29, 161, 242, 0.15); border-color: rgba(29, 161, 242, 0.4); }
         .share-btn.copy:hover { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); }
@@ -1759,21 +1758,6 @@
         loadRelatedPosts();
 
         // 공유 함수들
-        function shareKakao() {
-            if (window.Kakao && Kakao.isInitialized()) {
-                Kakao.Share.sendDefault({
-                    objectType: 'feed',
-                    content: {
-                        title: document.title,
-                        description: document.querySelector('meta[name="description"]')?.content || '',
-                        imageUrl: document.querySelector('meta[property="og:image"]')?.content || '',
-                        link: { mobileWebUrl: location.href, webUrl: location.href }
-                    }
-                });
-            } else {
-                window.open(`https://story.kakao.com/share?url=${encodeURIComponent(location.href)}`, '_blank', 'width=600,height=400');
-            }
-        }
         function shareFacebook() {
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`, '_blank', 'width=600,height=400');
         }
