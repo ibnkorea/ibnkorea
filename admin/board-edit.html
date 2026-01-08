@@ -640,6 +640,16 @@
     const WORKER_URL = 'https://ibn-analytics.urbane9293.workers.dev';
     let editingPostId = null;
 
+    // 정적 게시글 slug 목록 (수정 불가)
+    const STATIC_SLUGS = [
+        '2026-policy-fund-overview',
+        '2026-startup-support',
+        '2026-small-business-voucher',
+        '2026-ax-sprint-track',
+        '2026-non-capital-region',
+        '2026-hope-return-package'
+    ];
+
     document.addEventListener('DOMContentLoaded', function() {
         // 오늘 날짜 기본값 설정
         const today = new Date().toISOString().split('T')[0];
@@ -664,6 +674,14 @@
 
             if (data.post) {
                 const post = data.post;
+
+                // 정적 게시글 수정 차단
+                if (post.slug && STATIC_SLUGS.includes(post.slug)) {
+                    alert('샘플 게시글은 수정할 수 없습니다.');
+                    goBack();
+                    return;
+                }
+
                 document.getElementById('postTitle').value = post.title || '';
                 document.getElementById('postSummary').value = post.summary || '';
                 document.getElementById('postContent').value = post.content || '';
