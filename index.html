@@ -2636,8 +2636,10 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
                             }));
 
                         if (apiPosts.length > 0) {
+                            // API 게시글에서 정적 게시글과 중복되는 것 제거
+                            const filteredApiPosts = apiPosts.filter(p => !STATIC_SLUGS.includes(p.slug));
                             // 정적 + API 게시글 합치기
-                            allPosts = [...apiPosts, ...STATIC_POSTS];
+                            allPosts = [...filteredApiPosts, ...STATIC_POSTS];
                             // 날짜순 정렬 (최신순)
                             allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
                             renderPosts();
