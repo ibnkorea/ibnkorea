@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/marketing-news/:slug",
-      "destination": "/posts/:slug.html"
+      "destination": "/posts/:slug"
     }
   ],
   "redirects": [
