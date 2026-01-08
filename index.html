@@ -2514,7 +2514,7 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
     </div>
 
     <script>
-    // IBN 게시판 - Worker API 연동
+    // IBN 게시판 - 하이브리드 방식 (정적 + API)
     (function() {
         const WORKER_URL = 'https://ibn-analytics.urbane9293.workers.dev';
 
@@ -2522,6 +2522,73 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
         let currentPage = 1;
         let allPosts = [];
         let isLoading = false;
+
+        // 정적 게시글 데이터 (즉시 로딩 - API 호출 없음)
+        const STATIC_POSTS = [
+            {
+                id: 'static-1',
+                slug: '2026-policy-fund-overview',
+                title: '2026년 중소기업 정책자금 4.43조원 완전 가이드',
+                excerpt: '2026년 중소기업 정책자금 4조 4,313억원 운용계획 총정리. 혁신창업, 신성장기반, 재도약 등 분야별 지원내용과 신청방법 안내.',
+                category: '정책자금',
+                thumbnail: '/images/board/2026-policy-fund-overview.jpg',
+                date: '2026-01-08',
+                views: 1250
+            },
+            {
+                id: 'static-2',
+                slug: '2026-startup-support',
+                title: '2026년 창업지원사업 통합공고 3.46조원 완전 가이드',
+                excerpt: '2026년 창업지원사업 통합공고 3조 4,645억원 총정리. 111개 기관 508개 사업, 예비창업패키지부터 초격차까지 단계별 지원.',
+                category: '창업지원',
+                thumbnail: '/images/board/startup-funding.jpg',
+                date: '2026-01-07',
+                views: 980
+            },
+            {
+                id: 'static-3',
+                slug: '2026-small-business-voucher',
+                title: '2026년 소상공인 경영안정 바우처 5,790억원 완전 가이드',
+                excerpt: '2026년 신규 도입된 소상공인 경영안정 바우처 완벽 가이드. 230만 소상공인 대상, 1인당 25만원 지급.',
+                category: '소상공인',
+                thumbnail: '/images/board/2026-small-business-voucher.jpg',
+                date: '2026-01-06',
+                views: 856
+            },
+            {
+                id: 'static-4',
+                slug: '2026-ax-sprint-track',
+                title: '2026년 AX 스프린트 우대트랙 1,400억원 - AI·반도체 기업 특화 지원',
+                excerpt: '2026년 신설된 AX 스프린트 우대트랙 완벽 가이드. AI·반도체 혁신기업 대상 최대 한도·금리 우대·신속평가 혜택.',
+                category: '특화지원',
+                thumbnail: '/images/board/2026-ax-sprint-track.jpg',
+                date: '2026-01-05',
+                views: 723
+            },
+            {
+                id: 'static-5',
+                slug: '2026-non-capital-region',
+                title: '2026년 비수도권 특화 지원정책 2.44조원 - 지방 기업 우대 가이드',
+                excerpt: '2026년 비수도권 기업을 위한 정책자금 특화 지원 가이드. 전체 예산의 60% 이상 2.44조원 집중 공급.',
+                category: '지역특화',
+                thumbnail: '/images/board/2026-non-capital-region-support.jpg',
+                date: '2026-01-04',
+                views: 645
+            },
+            {
+                id: 'static-6',
+                slug: '2026-hope-return-package',
+                title: '2026년 희망리턴패키지 356억원 - 폐업부터 재기까지 원스톱 지원',
+                excerpt: '2026년 희망리턴패키지 완벽 가이드. 폐업 컨설팅, 점포 철거비 최대 600만원, 재창업 자금 2,000만원 지원.',
+                category: '재창업',
+                thumbnail: '/images/board/2026-hope-return-package.jpg',
+                date: '2026-01-03',
+                views: 512
+            }
+        ];
+
+        // 정적 게시글 slug 목록 (중복 제거용)
+        const STATIC_SLUGS = STATIC_POSTS.map(p => p.slug);
 
         // DOM 요소
         const loadingEl = document.getElementById('board-loading');
@@ -2532,41 +2599,53 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
         const modalOverlay = document.getElementById('board-modal-overlay');
         const modalClose = document.getElementById('board-modal-close');
 
-        // 게시글 로드 (API 연동)
+        // 게시글 로드 (하이브리드: 정적 먼저 + API 추가)
         async function fetchPosts() {
             if (isLoading) return;
             isLoading = true;
 
+            // 1. 정적 게시글 즉시 표시
+            allPosts = [...STATIC_POSTS];
+            loadingEl.style.display = 'none';
+            renderPosts();
+
+            // 2. API에서 새 게시글 가져오기 (백그라운드)
             try {
                 const response = await fetch(`${WORKER_URL}/board`);
 
-                if (!response.ok) {
-                    throw new Error('API 호출 실패');
-                }
+                if (response.ok) {
+                    const result = await response.json();
 
-                const result = await response.json();
+                    if (result.records && result.records.length > 0) {
+                        // API 게시글 중 정적 게시글과 중복되지 않는 것만 추가
+                        const apiPosts = result.records
+                            .filter(record => {
+                                const slug = record['slug'] || record['Slug'] || '';
+                                return !STATIC_SLUGS.includes(slug);
+                            })
+                            .map(record => ({
+                                id: record.id,
+                                slug: null, // API 게시글은 post.html로 이동
+                                title: record['제목'] || record.title || '',
+                                content: record['내용'] || record.content || '',
+                                excerpt: record['요약'] || (record['내용'] || '').substring(0, 100),
+                                category: record['카테고리'] || record['태그'] || '공지',
+                                thumbnail: record['썸네일URL'] || record.thumbnail || '',
+                                date: record['작성일'] || record.date || '',
+                                views: record['조회수'] || 0
+                            }));
 
-                // API 응답이 records 배열 형태
-                if (result.records && result.records.length > 0) {
-                    allPosts = result.records.map(record => ({
-                        id: record.id,
-                        title: record['제목'] || record.title || '',
-                        content: record['내용'] || record.content || '',
-                        excerpt: record['요약'] || (record['내용'] || '').substring(0, 100),
-                        category: record['카테고리'] || record['태그'] || '공지',
-                        thumbnail: record['썸네일URL'] || record.thumbnail || '',
-                        date: record['작성일'] || record.date || '',
-                        views: record['조회수'] || 0
-                    }));
-                    renderPosts();
-                } else {
-                    throw new Error('게시글이 없습니다');
+                        if (apiPosts.length > 0) {
+                            // 정적 + API 게시글 합치기
+                            allPosts = [...apiPosts, ...STATIC_POSTS];
+                            // 날짜순 정렬 (최신순)
+                            allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                            renderPosts();
+                        }
+                    }
                 }
             } catch (error) {
-                console.error('게시글 로드 실패:', error);
-                // 데모 데이터 대신 빈 상태 표시
-                allPosts = [];
-                renderPosts();
+                console.error('API 게시글 로드 실패 (정적 게시글은 정상 표시):', error);
             } finally {
                 isLoading = false;
             }
@@ -2574,8 +2653,6 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
 
         // 게시글 렌더링
         function renderPosts() {
-            loadingEl.style.display = 'none';
-
             if (allPosts.length === 0) {
                 emptyEl.style.display = 'block';
                 gridEl.style.display = 'none';
@@ -2589,7 +2666,7 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
             const postsToShow = allPosts.slice(0, currentPage * POSTS_PER_PAGE);
 
             gridEl.innerHTML = postsToShow.map((post, index) => `
-                <article class="board-card" data-id="${post.id}" style="animation-delay: ${(index % POSTS_PER_PAGE) * 0.1}s">
+                <article class="board-card" data-id="${post.id}" data-slug="${post.slug || ''}" style="animation-delay: ${(index % POSTS_PER_PAGE) * 0.1}s">
                     <div class="card-thumbnail">
                         ${post.thumbnail
                             ? `<img src="${post.thumbnail}" alt="${post.title}" loading="lazy">`
@@ -2623,11 +2700,19 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
                 moreEl.style.display = 'none';
             }
 
-            // 카드 클릭 이벤트 - 상세 페이지로 이동
+            // 카드 클릭 이벤트 - 정적/동적 분기
             gridEl.querySelectorAll('.board-card').forEach(card => {
                 card.addEventListener('click', () => {
+                    const slug = card.dataset.slug;
                     const postId = card.dataset.id;
-                    window.location.href = `post.html?id=${postId}`;
+
+                    if (slug) {
+                        // 정적 게시글 → 직접 HTML 파일로 이동 (빠른 로딩)
+                        window.location.href = `/posts/${slug}.html`;
+                    } else {
+                        // API 게시글 → post.html 경유
+                        window.location.href = `post.html?id=${postId}`;
+                    }
                 });
             });
         }
