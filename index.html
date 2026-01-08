@@ -2589,6 +2589,8 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
 
         // 정적 게시글 slug 목록 (중복 제거용)
         const STATIC_SLUGS = STATIC_POSTS.map(p => p.slug);
+        // 정적 게시글 제목 목록 (제목 기반 중복 제거용)
+        const STATIC_TITLES = STATIC_POSTS.map(p => p.title);
 
         // DOM 요소
         const loadingEl = document.getElementById('board-loading');
@@ -2618,10 +2620,15 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
 
                     if (result.records && result.records.length > 0) {
                         // API 게시글 중 정적 게시글과 중복되지 않는 것만 추가
+                        // slug 또는 제목 기반으로 중복 제거
                         const apiPosts = result.records
                             .filter(record => {
                                 const slug = record['slug'] || record['Slug'] || '';
-                                return !STATIC_SLUGS.includes(slug);
+                                const title = record['제목'] || record.title || '';
+                                // slug 또는 제목이 정적 게시글과 일치하면 제외
+                                const isDuplicateBySlug = slug && STATIC_SLUGS.includes(slug);
+                                const isDuplicateByTitle = title && STATIC_TITLES.includes(title);
+                                return !isDuplicateBySlug && !isDuplicateByTitle;
                             })
                             .map(record => ({
                                 id: record.id,
@@ -2636,10 +2643,8 @@ const API_BASE = 'https://ibn-analytics.urbane9293.workers.dev';
                             }));
 
                         if (apiPosts.length > 0) {
-                            // API 게시글에서 정적 게시글과 중복되는 것 제거
-                            const filteredApiPosts = apiPosts.filter(p => !STATIC_SLUGS.includes(p.slug));
                             // 정적 + API 게시글 합치기
-                            allPosts = [...filteredApiPosts, ...STATIC_POSTS];
+                            allPosts = [...apiPosts, ...STATIC_POSTS];
                             // 날짜순 정렬 (최신순)
                             allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
                             renderPosts();
