@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="css/main.css">
 
     <style>
-        /* 게시글 본문 스타일 */
+        /* 게시글 상세페이지 - polarad.co.kr 스타일 (다크 테마) */
         .post-section {
             padding: 140px 20px 80px;
             min-height: 100vh;
@@ -42,7 +42,7 @@
         }
 
         .post-container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -83,60 +83,53 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        /* 게시글 카드 */
-        .post-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
+        /* 게시글 래퍼 */
+        .post-wrapper {
             display: none;
         }
 
-        .post-thumbnail-wrapper {
-            width: 100%;
-            max-height: 400px;
-            overflow: hidden;
-            display: none;
-        }
-
-        .post-thumbnail {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-
+        /* 헤더 영역 */
         .post-header {
-            padding: 40px 40px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 32px;
         }
 
         .post-category {
             display: inline-block;
-            padding: 6px 14px;
+            padding: 6px 16px;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
             font-size: 13px;
             font-weight: 600;
-            color: #ffffff;
+            color: rgba(255, 255, 255, 0.9);
             margin-bottom: 16px;
         }
 
         .post-title {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 800;
             color: #FFFFFF;
-            line-height: 1.4;
+            line-height: 1.35;
             margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .post-excerpt {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            margin-bottom: 24px;
         }
 
         .post-meta {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 16px;
             color: rgba(255, 255, 255, 0.5);
             font-size: 14px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .post-meta-item {
@@ -148,29 +141,62 @@
         .post-meta-item svg {
             width: 16px;
             height: 16px;
-            fill: currentColor;
+            stroke: currentColor;
+            fill: none;
         }
 
+        .post-meta-divider {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 히어로 이미지 */
+        .post-hero-image {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .post-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 본문 콘텐츠 */
         .post-content {
-            padding: 40px;
+            margin-bottom: 48px;
         }
 
         .post-body {
-            font-size: 16px;
+            font-size: 17px;
             color: rgba(255, 255, 255, 0.9);
-            line-height: 1.8;
+            line-height: 1.85;
         }
 
         .post-body p {
-            margin: 0;
+            margin: 0 0 20px;
         }
-        .post-body p + p {
-            margin-top: 16px;
+
+        .post-body p:last-child {
+            margin-bottom: 0;
         }
 
         .post-body a {
-            color: #ffffff;
+            color: #60A5FA;
             text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .post-body a:hover {
+            color: #93C5FD;
         }
 
         .post-body strong {
@@ -178,11 +204,42 @@
             font-weight: 600;
         }
 
+        .post-body h2, .post-body h3 {
+            color: #FFFFFF;
+            font-weight: 700;
+            margin: 32px 0 16px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+        }
+
+        .post-body h3 {
+            font-size: 20px;
+        }
+
+        .post-body ul, .post-body ol {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .post-body li {
+            margin-bottom: 8px;
+        }
+
+        .post-body blockquote {
+            border-left: 4px solid rgba(255, 255, 255, 0.3);
+            padding-left: 20px;
+            margin: 24px 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
         /* 하단 네비게이션 */
         .post-nav {
             display: flex;
             gap: 16px;
-            margin-top: 32px;
+            margin-bottom: 48px;
             display: none;
         }
 
@@ -344,25 +401,33 @@
                 padding: 120px 16px 60px;
             }
 
-            .post-header {
-                padding: 24px 20px 20px;
+            .post-title {
+                font-size: 24px;
             }
 
-            .post-title {
-                font-size: 22px;
+            .post-excerpt {
+                font-size: 15px;
             }
 
             .post-meta {
-                flex-wrap: wrap;
                 gap: 12px;
             }
 
-            .post-content {
-                padding: 24px 20px;
+            .post-hero-image {
+                border-radius: 12px;
+                margin-bottom: 32px;
             }
 
             .post-body {
-                font-size: 15px;
+                font-size: 16px;
+            }
+
+            .post-body h2 {
+                font-size: 20px;
+            }
+
+            .post-body h3 {
+                font-size: 18px;
             }
 
             .post-nav {
@@ -370,7 +435,7 @@
             }
 
             .post-cta {
-                padding: 30px 20px;
+                padding: 32px 20px;
             }
 
             .post-cta-title {
@@ -445,25 +510,48 @@
                 <p class="post-error-desc">요청하신 게시글이 존재하지 않거나 삭제되었습니다.</p>
             </div>
 
-            <!-- 게시글 카드 -->
-            <article class="post-card" id="post-card">
-                <div class="post-thumbnail-wrapper" id="post-thumbnail-wrapper">
-                    <img class="post-thumbnail" id="post-thumbnail" src="" alt="">
-                </div>
-                <div class="post-header">
+            <!-- 게시글 래퍼 -->
+            <article class="post-wrapper" id="post-wrapper">
+                <!-- 헤더 영역 -->
+                <header class="post-header">
                     <span class="post-category" id="post-category">카테고리</span>
                     <h1 class="post-title" id="post-title">게시글 제목</h1>
+                    <p class="post-excerpt" id="post-excerpt"></p>
                     <div class="post-meta">
+                        <div class="post-meta-item">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="7" r="4"></circle>
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            </svg>
+                            <span>IBN 정책자금팀</span>
+                        </div>
+                        <span class="post-meta-divider"></span>
                         <div class="post-meta-item" id="post-date">
-                            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
                             <span>-</span>
                         </div>
+                        <span class="post-meta-divider"></span>
                         <div class="post-meta-item" id="post-views">
-                            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
                             <span>조회 0</span>
                         </div>
                     </div>
+                </header>
+
+                <!-- 히어로 이미지 -->
+                <div class="post-hero-image" id="post-hero-image">
+                    <img id="post-thumbnail" src="" alt="">
                 </div>
+
+                <!-- 본문 콘텐츠 -->
                 <div class="post-content">
                     <div class="post-body" id="post-body"></div>
                 </div>
@@ -876,7 +964,7 @@
     (function() {
         const loadingEl = document.getElementById('post-loading');
         const errorEl = document.getElementById('post-error');
-        const cardEl = document.getElementById('post-card');
+        const wrapperEl = document.getElementById('post-wrapper');
         const navEl = document.getElementById('post-nav');
         const ctaEl = document.getElementById('post-cta');
 
@@ -906,14 +994,15 @@
 
         function displayPost(post) {
             // slug 필드가 있으면 marketing-news 페이지로 리다이렉트
+            // replace()를 사용하여 히스토리에 새 항목을 추가하지 않음 (뒤로가기 무한루프 방지)
             if (post.slug) {
-                window.location.href = `/marketing-news/${post.slug}`;
+                window.location.replace(`/marketing-news/${post.slug}`);
                 return;
             }
 
             loadingEl.style.display = 'none';
             errorEl.style.display = 'none';
-            cardEl.style.display = 'block';
+            wrapperEl.style.display = 'block';
             navEl.style.display = 'flex';
             ctaEl.style.display = 'block';
 
@@ -928,20 +1017,36 @@
             // 페이지 타이틀 업데이트
             document.title = `${post.title} - IBN`;
 
-            // 썸네일 표시
+            // 히어로 이미지 표시
             const thumbnailEl = document.getElementById('post-thumbnail');
-            const thumbnailWrapper = document.getElementById('post-thumbnail-wrapper');
+            const heroImageEl = document.getElementById('post-hero-image');
             if (post.thumbnail) {
                 thumbnailEl.src = post.thumbnail;
                 thumbnailEl.alt = post.title;
-                thumbnailWrapper.style.display = 'block';
+                heroImageEl.style.display = 'block';
             } else {
-                thumbnailWrapper.style.display = 'none';
+                heroImageEl.style.display = 'none';
             }
 
             // 내용 채우기
             document.getElementById('post-category').textContent = post.category || '소식';
             document.getElementById('post-title').textContent = post.title;
+
+            // 요약 (excerpt) 표시 - description 또는 content 첫 부분 사용
+            const excerptEl = document.getElementById('post-excerpt');
+            if (post.description) {
+                excerptEl.textContent = post.description;
+                excerptEl.style.display = 'block';
+            } else if (post.content) {
+                // content에서 첫 150자 추출
+                const plainText = post.content.replace(/[#*>\[\]]/g, '').trim();
+                const excerpt = plainText.substring(0, 150) + (plainText.length > 150 ? '...' : '');
+                excerptEl.textContent = excerpt;
+                excerptEl.style.display = 'block';
+            } else {
+                excerptEl.style.display = 'none';
+            }
+
             document.getElementById('post-date').querySelector('span').textContent = formatDate(post.date);
             document.getElementById('post-views').querySelector('span').textContent = `조회 ${(post.views || 0).toLocaleString()}`;
 
@@ -992,7 +1097,7 @@
         function showError() {
             loadingEl.style.display = 'none';
             errorEl.style.display = 'block';
-            cardEl.style.display = 'none';
+            wrapperEl.style.display = 'none';
             navEl.style.display = 'none';
             ctaEl.style.display = 'none';
         }
