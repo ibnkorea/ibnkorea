@@ -53,10 +53,163 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 140px 24px 80px;
         }
+
+        /* 2컬럼 레이아웃 */
+        .post-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 48px;
+            align-items: start;
+        }
+        .post-main { max-width: 800px; }
+
+        /* 사이드바 */
+        .post-sidebar {
+            position: sticky;
+            top: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .sidebar-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 공유하기 버튼 */
+        .share-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+        .share-btn {
+            flex: 1;
+            min-width: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+        .share-btn svg { width: 18px; height: 18px; fill: currentColor; }
+        .share-btn.kakao:hover { background: rgba(254, 229, 0, 0.15); border-color: rgba(254, 229, 0, 0.4); }
+        .share-btn.facebook:hover { background: rgba(24, 119, 242, 0.15); border-color: rgba(24, 119, 242, 0.4); }
+        .share-btn.twitter:hover { background: rgba(29, 161, 242, 0.15); border-color: rgba(29, 161, 242, 0.4); }
+        .share-btn.copy:hover { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); }
+
+        /* 글 정보 */
+        .post-info-list { display: flex; flex-direction: column; gap: 12px; }
+        .post-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        .post-info-item svg {
+            width: 16px;
+            height: 16px;
+            stroke: rgba(255, 255, 255, 0.5);
+            fill: none;
+            flex-shrink: 0;
+        }
+
+        /* 사이드바 버튼 */
+        .sidebar-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .sidebar-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+        }
+        .sidebar-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
+
+        /* 관련글 섹션 */
+        .related-section {
+            margin-top: 64px;
+            padding-top: 48px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+        .related-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 24px; }
+        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .related-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .related-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+        .related-card-image {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .related-card-content { padding: 16px; }
+        .related-card-category {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .related-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         /* 브레드크럼 */
         .breadcrumb {
             display: flex;
@@ -910,11 +1063,20 @@
             color: var(--accent);
         }
 
-        /* 반응형 */
+        /* 반응형 - 태블릿 */
+        @media (max-width: 1024px) {
+            .post-layout { grid-template-columns: 1fr; }
+            .post-sidebar { display: none; }
+            .post-main { max-width: 800px; margin: 0 auto; }
+            .related-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* 반응형 - 모바일 */
         @media (max-width: 768px) {
             .container {
                 padding: 24px 16px 60px;
             }
+            .related-grid { grid-template-columns: 1fr; }
 
             .article-title {
                 font-size: 26px;
@@ -980,6 +1142,8 @@
 
     
     <div class="container">
+        <div class="post-layout">
+        <div class="post-main">
         <!-- 브레드크럼 -->
         <nav class="breadcrumb" aria-label="경로">
             <a href="../index.html">
@@ -1441,6 +1605,70 @@
                 무료 상담 신청하기
             </a>
         </div>
+
+        <!-- 관련글 섹션 -->
+        <section class="related-section" id="relatedPosts">
+            <h3 class="related-title">관련 글</h3>
+            <div class="related-grid" id="relatedGrid"></div>
+        </section>
+
+        </div><!-- /.post-main -->
+
+        <!-- 사이드바 -->
+        <aside class="post-sidebar">
+            <div class="sidebar-section">
+                <h4 class="sidebar-title">공유하기</h4>
+                <div class="share-buttons">
+                    <button class="share-btn kakao" onclick="shareKakao()">
+                        <svg viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.58 2 11c0 2.84 1.86 5.33 4.66 6.77l-.84 3.16c-.1.37.33.66.64.44l3.87-2.58c.55.07 1.11.11 1.67.11 5.5 0 10-3.58 10-8S17.5 3 12 3z"/></svg>
+                        카카오톡
+                    </button>
+                    <button class="share-btn facebook" onclick="shareFacebook()">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        Facebook
+                    </button>
+                    <button class="share-btn twitter" onclick="shareTwitter()">
+                        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        X
+                    </button>
+                    <button class="share-btn copy" onclick="copyLink()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        링크 복사
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h4 class="sidebar-title">글 정보</h4>
+                <div class="post-info-list">
+                    <div class="post-info-item">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>2026.01.07</span>
+                    </div>
+                    <div class="post-info-item">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <span>조회 2,156</span>
+                    </div>
+                    <div class="post-info-item">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
+                        <span>IBN 정책자금팀</span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="../index.html#contact-form" class="sidebar-btn">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                무료상담 신청
+            </a>
+
+            <a href="../marketing.html" class="sidebar-btn">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                목록으로
+            </a>
+        </aside>
+        </div><!-- /.post-layout -->
     </div>
 
     <script>
@@ -1509,6 +1737,67 @@
                 }
             }
         });
+
+        // 관련글 로드
+        const WORKER_URL = 'https://ibn-analytics.urbane9293.workers.dev';
+        async function loadRelatedPosts() {
+            try {
+                const currentSlug = window.location.pathname.split('/').pop().replace('.html', '');
+                const response = await fetch(`${WORKER_URL}/api/posts/related?slug=${currentSlug}&limit=3`);
+                if (!response.ok) return;
+                const posts = await response.json();
+                if (!posts || posts.length === 0) return;
+
+                const grid = document.getElementById('relatedGrid');
+                grid.innerHTML = posts.map(post => `
+                    <a href="/marketing-news/${post.slug}" class="related-card">
+                        <img src="${post.thumbnailUrl || 'https://pub-5adc3ecd20c347cfb03e96cae9ceb623.r2.dev/images/default-thumb.png'}" alt="${post.title}" class="related-card-image" loading="lazy">
+                        <div class="related-card-content">
+                            <span class="related-card-category">${post.category || '정책자금'}</span>
+                            <h4 class="related-card-title">${post.title}</h4>
+                        </div>
+                    </a>
+                `).join('');
+                document.getElementById('relatedPosts').style.display = 'block';
+            } catch (e) { console.log('Related posts load failed:', e); }
+        }
+        loadRelatedPosts();
+
+        // 공유 함수들
+        function shareKakao() {
+            if (window.Kakao && Kakao.isInitialized()) {
+                Kakao.Share.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: document.title,
+                        description: document.querySelector('meta[name="description"]')?.content || '',
+                        imageUrl: document.querySelector('meta[property="og:image"]')?.content || '',
+                        link: { mobileWebUrl: location.href, webUrl: location.href }
+                    }
+                });
+            } else {
+                window.open(`https://story.kakao.com/share?url=${encodeURIComponent(location.href)}`, '_blank', 'width=600,height=400');
+            }
+        }
+        function shareFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`, '_blank', 'width=600,height=400');
+        }
+        function shareTwitter() {
+            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(location.href)}&text=${encodeURIComponent(document.title)}`, '_blank', 'width=600,height=400');
+        }
+        function copyLink() {
+            navigator.clipboard.writeText(location.href).then(() => {
+                alert('링크가 복사되었습니다.');
+            }).catch(() => {
+                const t = document.createElement('textarea');
+                t.value = location.href;
+                document.body.appendChild(t);
+                t.select();
+                document.execCommand('copy');
+                document.body.removeChild(t);
+                alert('링크가 복사되었습니다.');
+            });
+        }
     </script>
     <!-- Footer Component -->
     <style>
