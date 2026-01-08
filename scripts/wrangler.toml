@@ -16,6 +16,11 @@ GITHUB_BRANCH = "main"
 [triggers]
 crons = ["0 18 * * *"]
 
+# KV 네임스페이스 바인딩 (Airtable 캐싱용)
+[[kv_namespaces]]
+binding = "CACHE"
+id = "453c99bf8f4b445aad9878a7c9173364"
+
 # R2 버킷 바인딩 (이미지 업로드용)
 # S3 Endpoint: https://a74e40a947bebdb998ae5cef515e09fc.r2.cloudflarestorage.com
 # Public URL: https://pub-5adc3ecd20c347cfb03e96cae9ceb623.r2.dev

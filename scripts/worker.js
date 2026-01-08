@@ -125,6 +125,59 @@ function formatISOKST(date = new Date()) {
 }
 
 // ================================================
+// KV 캐싱 헬퍼 함수
+// ================================================
+
+// 캐시 TTL 설정 (초) - Cloudflare KV 최소 TTL: 60초
+const CACHE_TTL = {
+  leads: 60,      // 접수내역: 1분
+  board: 300,     // 게시판: 5분
+  employees: 300, // 직원: 5분
+  popups: 300,    // 팝업: 5분
+};
+
+// 캐시에서 데이터 조회
+async function getFromCache(env, key) {
+  if (!env.CACHE) return null;
+  try {
+    const cached = await env.CACHE.get(key, { type: 'json' });
+    if (cached) {
+      console.log(`✅ Cache HIT: ${key}`);
+      return cached;
+    }
+    console.log(`⚪ Cache MISS: ${key}`);
+    return null;
+  } catch (error) {
+    console.error(`❌ Cache error: ${error.message}`);
+    return null;
+  }
+}
+
+// 캐시에 데이터 저장
+async function setToCache(env, key, data, ttlSeconds) {
+  if (!env.CACHE) return;
+  try {
+    await env.CACHE.put(key, JSON.stringify(data), {
+      expirationTtl: ttlSeconds
+    });
+    console.log(`💾 Cache SET: ${key} (TTL: ${ttlSeconds}s)`);
+  } catch (error) {
+    console.error(`❌ Cache set error: ${error.message}`);
+  }
+}
+
+// 캐시 무효화
+async function invalidateCache(env, keyPattern) {
+  if (!env.CACHE) return;
+  try {
+    await env.CACHE.delete(keyPattern);
+    console.log(`🗑️ Cache INVALIDATED: ${keyPattern}`);
+  } catch (error) {
+    console.error(`❌ Cache invalidate error: ${error.message}`);
+  }
+}
+
+// ================================================
 // Google Analytics JWT/Token
 // ================================================
 
@@ -653,6 +706,9 @@ async function handleSubmit(request, env) {
         results.airtable.success = true;
         results.airtable.id = airtableResult.id;
         console.log('✅ Airtable 저장 완료:', airtableResult.id);
+
+        // 캐시 무효화 (새 접수 추가됨)
+        await invalidateCache(env, 'leads:list');
       } else {
         const error = await airtableResponse.json();
         results.airtable.error = error;
@@ -829,11 +885,27 @@ function buildTelegramMessage(fields, submitDate, submitTime) {
 async function handleLeadsAPI(request, env, path) {
   const method = request.method;
 
-  // GET /leads - 접수 내역 전체 조회
+  // GET /leads - 접수 내역 전체 조회 (KV 캐싱 적용)
   if (method === 'GET' && path === '/leads') {
+    const CACHE_KEY = 'leads:list';
+
     try {
       console.log('📋 Fetching leads...');
 
+      // 1. 캐시 확인
+      const cached = await getFromCache(env, CACHE_KEY);
+      if (cached) {
+        return new Response(JSON.stringify({
+          success: true,
+          leads: cached.leads,
+          cached: true,
+          cachedAt: cached.cachedAt
+        }), {
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // 2. 캐시 미스 - Airtable에서 조회
       const sortField = encodeURIComponent('Date');
       const airtableUrl = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/${env.AIRTABLE_TABLE_ID}?sort[0][field]=${sortField}&sort[0][direction]=desc`;
       const airtableResponse = await fetch(airtableUrl, {
@@ -874,11 +946,18 @@ async function handleLeadsAPI(request, env, path) {
         Memo: record.fields['Memo'] || ''
       }));
 
-      console.log(`✅ Fetched ${leads.length} leads`);
+      console.log(`✅ Fetched ${leads.length} leads from Airtable`);
+
+      // 3. 캐시에 저장
+      await setToCache(env, CACHE_KEY, {
+        leads: leads,
+        cachedAt: new Date().toISOString()
+      }, CACHE_TTL.leads);
 
       return new Response(JSON.stringify({
         success: true,
-        leads: leads
+        leads: leads,
+        cached: false
       }), {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
       });
@@ -932,6 +1011,10 @@ async function handleLeadsAPI(request, env, path) {
       }
 
       const result = await airtableResponse.json();
+
+      // 캐시 무효화
+      await invalidateCache(env, 'leads:list');
+
       return new Response(JSON.stringify({
         success: true,
         record: result
@@ -980,6 +1063,9 @@ async function handleLeadsAPI(request, env, path) {
       const result = await airtableResponse.json();
       console.log('✅ Lead deleted:', recordId);
 
+      // 캐시 무효화
+      await invalidateCache(env, 'leads:list');
+
       return new Response(JSON.stringify({
         success: true,
         deleted: true,
@@ -1011,9 +1097,24 @@ async function handleLeadsAPI(request, env, path) {
 async function handleBoardAPI(request, env, path) {
   const method = request.method;
 
-  // GET /board - 게시글 목록 조회
+  // GET /board - 게시글 목록 조회 (KV 캐싱 적용)
   if (method === 'GET' && (path === '/board' || path === '/posts')) {
+    const CACHE_KEY = 'board:list';
+
     try {
+      // 1. 캐시 확인
+      const cached = await getFromCache(env, CACHE_KEY);
+      if (cached) {
+        return new Response(JSON.stringify({
+          records: cached.records,
+          cached: true,
+          cachedAt: cached.cachedAt
+        }), {
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // 2. 캐시 미스 - Airtable에서 조회
       const airtableResponse = await fetch(
         `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/board2?sort[0][field]=date&sort[0][direction]=desc`,
         {
@@ -1042,7 +1143,13 @@ async function handleBoardAPI(request, env, path) {
         게시여부: record.fields['isPublic'] !== false
       }));
 
-      return new Response(JSON.stringify({ records }), {
+      // 3. 캐시에 저장
+      await setToCache(env, CACHE_KEY, {
+        records: records,
+        cachedAt: new Date().toISOString()
+      }, CACHE_TTL.board);
+
+      return new Response(JSON.stringify({ records, cached: false }), {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
       });
     } catch (error) {
@@ -1097,6 +1204,9 @@ async function handleBoardAPI(request, env, path) {
 
       const result = await airtableResponse.json();
       console.log('✅ Board post created:', result.id);
+
+      // 캐시 무효화
+      await invalidateCache(env, 'board:list');
 
       return new Response(JSON.stringify({
         success: true,
@@ -1159,6 +1269,9 @@ async function handleBoardAPI(request, env, path) {
       const result = await airtableResponse.json();
       console.log('✅ Board post updated:', recordId);
 
+      // 캐시 무효화
+      await invalidateCache(env, 'board:list');
+
       return new Response(JSON.stringify({
         success: true,
         id: result.id
@@ -1205,6 +1318,9 @@ async function handleBoardAPI(request, env, path) {
 
       const result = await airtableResponse.json();
       console.log('✅ Board post deleted:', recordId);
+
+      // 캐시 무효화
+      await invalidateCache(env, 'board:list');
 
       return new Response(JSON.stringify({
         success: true,
@@ -1274,9 +1390,24 @@ async function handleBoardAPI(request, env, path) {
 async function handleEmployeesAPI(request, env, path) {
   const method = request.method;
 
-  // GET /employees - 공개 임직원 목록 조회 (프론트엔드용)
+  // GET /employees - 공개 임직원 목록 조회 (프론트엔드용, KV 캐싱 적용)
   if (method === 'GET' && path === '/employees') {
+    const CACHE_KEY = 'employees:public';
+
     try {
+      // 1. 캐시 확인
+      const cached = await getFromCache(env, CACHE_KEY);
+      if (cached) {
+        return new Response(JSON.stringify({
+          employees: cached.employees,
+          cached: true,
+          cachedAt: cached.cachedAt
+        }), {
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // 2. 캐시 미스 - Airtable에서 조회
       const airtableResponse = await fetch(
         `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/employees?` +
         `filterByFormula={isActive}=TRUE()&sort[0][field]=order&sort[0][direction]=asc`,
@@ -1306,7 +1437,13 @@ async function handleEmployeesAPI(request, env, path) {
         이미지위치: record.fields['imagePosition'] || 'center 20%'
       }));
 
-      return new Response(JSON.stringify({ employees }), {
+      // 3. 캐시에 저장
+      await setToCache(env, CACHE_KEY, {
+        employees: employees,
+        cachedAt: new Date().toISOString()
+      }, CACHE_TTL.employees);
+
+      return new Response(JSON.stringify({ employees, cached: false }), {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
       });
     } catch (error) {
@@ -1317,9 +1454,24 @@ async function handleEmployeesAPI(request, env, path) {
     }
   }
 
-  // GET /employees/all - 전체 임직원 목록 조회 (관리자용)
+  // GET /employees/all - 전체 임직원 목록 조회 (관리자용, KV 캐싱 적용)
   if (method === 'GET' && path === '/employees/all') {
+    const CACHE_KEY = 'employees:all';
+
     try {
+      // 1. 캐시 확인
+      const cached = await getFromCache(env, CACHE_KEY);
+      if (cached) {
+        return new Response(JSON.stringify({
+          employees: cached.employees,
+          cached: true,
+          cachedAt: cached.cachedAt
+        }), {
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // 2. 캐시 미스 - Airtable에서 조회
       const airtableResponse = await fetch(
         `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/employees?` +
         `sort[0][field]=order&sort[0][direction]=asc`,
@@ -1351,7 +1503,13 @@ async function handleEmployeesAPI(request, env, path) {
         createdTime: record.createdTime
       }));
 
-      return new Response(JSON.stringify({ employees }), {
+      // 3. 캐시에 저장
+      await setToCache(env, CACHE_KEY, {
+        employees: employees,
+        cachedAt: new Date().toISOString()
+      }, CACHE_TTL.employees);
+
+      return new Response(JSON.stringify({ employees, cached: false }), {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
       });
     } catch (error) {
@@ -1409,6 +1567,10 @@ async function handleEmployeesAPI(request, env, path) {
 
       const result = await airtableResponse.json();
       console.log('✅ Employee created:', result.id);
+
+      // 캐시 무효화 (두 캐시 키 모두)
+      await invalidateCache(env, 'employees:public');
+      await invalidateCache(env, 'employees:all');
 
       return new Response(JSON.stringify({
         success: true,
@@ -1480,6 +1642,10 @@ async function handleEmployeesAPI(request, env, path) {
       const result = await airtableResponse.json();
       console.log('✅ Employee updated:', recordId);
 
+      // 캐시 무효화 (두 캐시 키 모두)
+      await invalidateCache(env, 'employees:public');
+      await invalidateCache(env, 'employees:all');
+
       return new Response(JSON.stringify({
         success: true,
         id: result.id
@@ -1531,6 +1697,10 @@ async function handleEmployeesAPI(request, env, path) {
 
       const result = await airtableResponse.json();
       console.log('✅ Employee deleted:', recordId);
+
+      // 캐시 무효화 (두 캐시 키 모두)
+      await invalidateCache(env, 'employees:public');
+      await invalidateCache(env, 'employees:all');
 
       return new Response(JSON.stringify({
         success: true,
@@ -1607,9 +1777,24 @@ async function handlePopupsAPI(request, env, path) {
     }
   }
 
-  // GET /popups/all - 전체 팝업 목록 조회 (관리자용)
+  // GET /popups/all - 전체 팝업 목록 조회 (관리자용, KV 캐싱 적용)
   if (method === 'GET' && path === '/popups/all') {
+    const CACHE_KEY = 'popups:all';
+
     try {
+      // 1. 캐시 확인
+      const cached = await getFromCache(env, CACHE_KEY);
+      if (cached) {
+        return new Response(JSON.stringify({
+          popups: cached.popups,
+          cached: true,
+          cachedAt: cached.cachedAt
+        }), {
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // 2. 캐시 미스 - Airtable에서 조회
       const airtableResponse = await fetch(
         `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/popups?` +
         `sort[0][field]=order&sort[0][direction]=asc`,
@@ -1639,7 +1824,13 @@ async function handlePopupsAPI(request, env, path) {
         createdTime: record.createdTime
       }));
 
-      return new Response(JSON.stringify({ popups }), {
+      // 3. 캐시에 저장
+      await setToCache(env, CACHE_KEY, {
+        popups: popups,
+        cachedAt: new Date().toISOString()
+      }, CACHE_TTL.popups);
+
+      return new Response(JSON.stringify({ popups, cached: false }), {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
       });
     } catch (error) {
@@ -1695,6 +1886,9 @@ async function handlePopupsAPI(request, env, path) {
 
       const result = await airtableResponse.json();
       console.log('✅ Popup created:', result.id);
+
+      // 캐시 무효화
+      await invalidateCache(env, 'popups:all');
 
       return new Response(JSON.stringify({
         success: true,
@@ -1762,6 +1956,9 @@ async function handlePopupsAPI(request, env, path) {
       const result = await airtableResponse.json();
       console.log('✅ Popup updated:', result.id);
 
+      // 캐시 무효화
+      await invalidateCache(env, 'popups:all');
+
       return new Response(JSON.stringify({
         success: true,
         id: result.id
@@ -1809,6 +2006,9 @@ async function handlePopupsAPI(request, env, path) {
 
       const result = await airtableResponse.json();
       console.log('✅ Popup deleted:', recordId);
+
+      // 캐시 무효화
+      await invalidateCache(env, 'popups:all');
 
       return new Response(JSON.stringify({
         success: true,
