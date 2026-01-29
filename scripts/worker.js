@@ -22,6 +22,16 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
+// 정적 게시글 slug 목록 (수정/삭제 불가)
+const STATIC_SLUGS = [
+  '2026-policy-fund-overview',
+  '2026-startup-support',
+  '2026-small-business-voucher',
+  '2026-ax-sprint-track',
+  '2026-non-capital-region',
+  '2026-hope-return-package'
+];
+
 // ================================================
 // 유틸리티 함수
 // ================================================
@@ -174,6 +184,33 @@ async function invalidateCache(env, keyPattern) {
     console.log(`🗑️ Cache INVALIDATED: ${keyPattern}`);
   } catch (error) {
     console.error(`❌ Cache invalidate error: ${error.message}`);
+  }
+}
+
+// R2 이미지 삭제 헬퍼 함수
+async function deleteR2Image(env, imageUrl) {
+  if (!env.BUCKET || !imageUrl) return false;
+
+  try {
+    // R2 URL에서 키 추출 (예: https://pub-xxx.r2.dev/board/123.webp → board/123.webp)
+    const R2_PUBLIC_URL = 'https://pub-5adc3ecd20c347cfb03e96cae9ceb623.r2.dev/';
+    if (!imageUrl.startsWith(R2_PUBLIC_URL)) {
+      console.log('⚠️ Not an R2 image URL, skipping:', imageUrl);
+      return false;
+    }
+
+    const key = imageUrl.replace(R2_PUBLIC_URL, '');
+    if (!key) {
+      console.log('⚠️ Empty key, skipping');
+      return false;
+    }
+
+    await env.BUCKET.delete(key);
+    console.log('🗑️ R2 image deleted:', key);
+    return true;
+  } catch (error) {
+    console.error('❌ R2 delete error:', error.message);
+    return false;
   }
 }
 
@@ -1167,15 +1204,13 @@ async function handleBoardAPI(request, env, path) {
       console.log('📝 Creating board post:', data.제목);
 
       // 한글 필드명 → 영문 필드명 변환
+      // Airtable board2 테이블 필드: title, slug, content, thumbnailUrl, date, category, isPublic
       const fields = {
         title: data.제목 || '',
         content: data.내용 || '',
-        summary: data.요약 || '',
         category: data.카테고리 || '',
         thumbnailUrl: data.썸네일URL || '',
-        tags: data.태그 || '',
         date: data.작성일 || formatDateKST(new Date()),
-        views: 0,
         isPublic: data.게시여부 !== false
       };
 
@@ -1229,17 +1264,38 @@ async function handleBoardAPI(request, env, path) {
   if (method === 'PATCH' && path.startsWith('/board/')) {
     const recordId = path.replace('/board/', '');
     try {
+      // 정적 게시글 수정 차단: 먼저 게시글 조회하여 slug 확인
+      const checkResponse = await fetch(
+        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/board2/${recordId}`,
+        {
+          headers: { 'Authorization': `Bearer ${env.AIRTABLE_TOKEN}` }
+        }
+      );
+      if (checkResponse.ok) {
+        const checkResult = await checkResponse.json();
+        const slug = checkResult.fields?.slug;
+        if (slug && STATIC_SLUGS.includes(slug)) {
+          console.log('🚫 Blocked: Cannot modify static post:', slug);
+          return new Response(JSON.stringify({
+            success: false,
+            error: '샘플 게시글은 수정할 수 없습니다.'
+          }), {
+            status: 403,
+            headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+          });
+        }
+      }
+
       const data = await request.json();
       console.log('✏️ Updating board post:', recordId);
 
       // 한글 필드명 → 영문 필드명 변환 (전달된 필드만)
+      // Airtable board2 테이블 필드: title, slug, content, thumbnailUrl, date, category, isPublic
       const fields = {};
       if (data.제목 !== undefined) fields.title = data.제목;
       if (data.내용 !== undefined) fields.content = data.내용;
-      if (data.요약 !== undefined) fields.summary = data.요약;
       if (data.카테고리 !== undefined) fields.category = data.카테고리;
       if (data.썸네일URL !== undefined) fields.thumbnailUrl = data.썸네일URL;
-      if (data.태그 !== undefined) fields.tags = data.태그;
       if (data.작성일 !== undefined) fields.date = data.작성일;
       if (data.게시여부 !== undefined) fields.isPublic = data.게시여부;
 
@@ -1293,6 +1349,28 @@ async function handleBoardAPI(request, env, path) {
   if (method === 'DELETE' && path.startsWith('/board/')) {
     const recordId = path.replace('/board/', '');
     try {
+      // 정적 게시글 삭제 차단: 먼저 게시글 조회하여 slug 확인
+      const checkResponse = await fetch(
+        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/board2/${recordId}`,
+        {
+          headers: { 'Authorization': `Bearer ${env.AIRTABLE_TOKEN}` }
+        }
+      );
+      if (checkResponse.ok) {
+        const checkResult = await checkResponse.json();
+        const slug = checkResult.fields?.slug;
+        if (slug && STATIC_SLUGS.includes(slug)) {
+          console.log('🚫 Blocked: Cannot delete static post:', slug);
+          return new Response(JSON.stringify({
+            success: false,
+            error: '샘플 게시글은 삭제할 수 없습니다.'
+          }), {
+            status: 403,
+            headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
+          });
+        }
+      }
+
       console.log('🗑️ Deleting board post:', recordId);
 
       const airtableResponse = await fetch(
@@ -1429,7 +1507,7 @@ async function handleEmployeesAPI(request, env, path) {
         이름: record.fields['name'] || '',
         직책: record.fields['position'] || '',
         소개: record.fields['intro'] || '',
-        프로필이미지URL: record.fields['profileImageUrl'] || '',
+        프로필이미지URL: record.fields['profileImage'] || '',
         순서: record.fields['order'] || 0,
         자금유형: record.fields['fundType'] || '',
         업무영역: record.fields['workArea'] || '',
@@ -1493,7 +1571,7 @@ async function handleEmployeesAPI(request, env, path) {
         이름: record.fields['name'] || '',
         직책: record.fields['position'] || '',
         소개: record.fields['intro'] || '',
-        프로필이미지URL: record.fields['profileImageUrl'] || '',
+        프로필이미지URL: record.fields['profileImage'] || '',
         순서: record.fields['order'] || 0,
         공개여부: record.fields['isActive'] || false,
         자금유형: record.fields['fundType'] || '',
@@ -1532,7 +1610,7 @@ async function handleEmployeesAPI(request, env, path) {
         'name': data.이름 || '',
         'position': data.직책 || '',
         'intro': data.소개 || '',
-        'profileImageUrl': data.프로필이미지URL || '',
+        'profileImage': data.프로필이미지URL || '',
         'order': data.순서 || 1,
         'isActive': data.공개여부 !== false,
         'imagePosition': data.이미지위치 || 'center 20%'
@@ -1607,7 +1685,7 @@ async function handleEmployeesAPI(request, env, path) {
       if (data.이름 !== undefined) fields['name'] = data.이름;
       if (data.직책 !== undefined) fields['position'] = data.직책;
       if (data.소개 !== undefined) fields['intro'] = data.소개;
-      if (data.프로필이미지URL !== undefined) fields['profileImageUrl'] = data.프로필이미지URL;
+      if (data.프로필이미지URL !== undefined) fields['profileImage'] = data.프로필이미지URL;
       if (data.순서 !== undefined) fields['order'] = data.순서;
       if (data.공개여부 !== undefined) fields['isActive'] = data.공개여부;
       if (data.이미지위치 !== undefined) fields['imagePosition'] = data.이미지위치;
@@ -1674,6 +1752,25 @@ async function handleEmployeesAPI(request, env, path) {
     try {
       console.log('🗑️ Deleting employee:', recordId);
 
+      // 1. 먼저 임직원 정보를 가져와서 이미지 URL 확인
+      const getResponse = await fetch(
+        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/employees/${recordId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${env.AIRTABLE_TOKEN}`
+          }
+        }
+      );
+
+      let imageUrl = null;
+      if (getResponse.ok) {
+        const employeeData = await getResponse.json();
+        imageUrl = employeeData.fields?.['profileImage'] || null;
+        console.log('📷 Employee image URL:', imageUrl || 'none');
+      }
+
+      // 2. Airtable에서 레코드 삭제
       const airtableResponse = await fetch(
         `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/employees/${recordId}`,
         {
@@ -1698,6 +1795,11 @@ async function handleEmployeesAPI(request, env, path) {
       const result = await airtableResponse.json();
       console.log('✅ Employee deleted:', recordId);
 
+      // 3. R2에서 이미지 삭제
+      if (imageUrl) {
+        await deleteR2Image(env, imageUrl);
+      }
+
       // 캐시 무효화 (두 캐시 키 모두)
       await invalidateCache(env, 'employees:public');
       await invalidateCache(env, 'employees:all');
@@ -1705,7 +1807,8 @@ async function handleEmployeesAPI(request, env, path) {
       return new Response(JSON.stringify({
         success: true,
         deleted: true,
-        id: result.id
+        id: result.id,
+        imageDeleted: !!imageUrl
       }), {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
       });
@@ -1983,6 +2086,25 @@ async function handlePopupsAPI(request, env, path) {
     try {
       console.log('🗑️ Deleting popup:', recordId);
 
+      // 1. 먼저 팝업 정보를 가져와서 이미지 URL 확인
+      const getResponse = await fetch(
+        `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/popups/${recordId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${env.AIRTABLE_TOKEN}`
+          }
+        }
+      );
+
+      let imageUrl = null;
+      if (getResponse.ok) {
+        const popupData = await getResponse.json();
+        imageUrl = popupData.fields?.imageUrl || null;
+        console.log('📷 Popup image URL:', imageUrl || 'none');
+      }
+
+      // 2. Airtable에서 레코드 삭제
       const airtableResponse = await fetch(
         `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/popups/${recordId}`,
         {
@@ -2007,13 +2129,19 @@ async function handlePopupsAPI(request, env, path) {
       const result = await airtableResponse.json();
       console.log('✅ Popup deleted:', recordId);
 
+      // 3. R2에서 이미지 삭제
+      if (imageUrl) {
+        await deleteR2Image(env, imageUrl);
+      }
+
       // 캐시 무효화
       await invalidateCache(env, 'popups:all');
 
       return new Response(JSON.stringify({
         success: true,
         deleted: true,
-        id: result.id
+        id: result.id,
+        imageDeleted: !!imageUrl
       }), {
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' }
       });

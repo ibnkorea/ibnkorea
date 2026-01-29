@@ -3,7 +3,7 @@
 .env.local
 .env.*.local
 
-# Session handoff files (may contain sensitive info)
+# Session handoff files
 NEXT_SESSION_REQUEST.md
 SESSION_*.md
 
@@ -12,6 +12,14 @@ node_modules/
 
 # Build output
 dist/
+
+# Generated images
+generated-images/
+generated-images-v2/
+
+# Temp files
+temp_board.json
+nul
 
 # IDE
 .idea/
@@ -26,6 +34,5 @@ opencode/
 # VS Code AI rules
 .github/instructions/
 
-.vercel
-
+# Vercel
 .vercel
